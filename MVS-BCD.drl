@@ -1,0 +1,4009 @@
+#MVS 1.0
+
+/*
+	
+	MIDI mapping (Yoke/Mapple)
+	------------
+
+	MIDI In 1: Midi Port 2 (Loopback port)
+	MIDI In 2: BCD3000
+
+	MIDI Out 1: MIDI Port 1 (out to VDJ/Traktor)
+	MIDI Out 2: Midi Port 2 (out to Loopback port)
+	MIDI Out 3: BCD3000    
+
+	Run midirules.bat
+	Choose mvs.drl
+	click 2<> 3<> 6<><>
+	click 3<> 4<> 7<> 8<><>
+
+
+    This rules are free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+	
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License along
+    with this program; if not, write to the Free Software Foundation, Inc.,
+    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+    
+    Marcello
+    marcellovani@yahoo.co.uk
+*/
+
+
+package MVS_BCD3000_2_TRAKTOR_VIRTUALDJ
+
+# Don't change the following line! 
+expander MidiRules.dsl
+
+
+####################################################################################
+#################################### MISC RULES  ###################################
+####################################################################################
+
+
+#################################### INITIALIZATION ################################
+
+rule "initialization"
+when
+	Initialization
+then
+	#################################### SYNC WITH TRAKTOR 3 ##### GLOBAL ###########################
+	
+	# Request positions of moving elements (faders and knobs)
+	Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 100 , data2 : 127		#BCD3000
+
+	#BCD3000 Jog Accelaration on Max by default				
+	Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 99 , data2 : 1 #Jog BCD3000 Acceleration On
+
+	########## LED TESTS ########################################################### 
+
+	#BCD3000
+
+	#Play/pause DA
+	Send msg in 100ms to midi out 3 with channel : 1 , command : 176 , data1 : 18 , data2 : 127 	#Play/pause A LED ON
+	Send msg in 4800ms to midi out 3 with channel : 1 , command : 176 , data1 : 18 , data2 : 0 	#Play/pause A LED OFF
+	
+	#Cue B 
+	Send msg in 150ms to midi out 3 with channel : 1 , command : 176 , data1 : 9 , data2 : 127	#Cue B LED ON
+	Send msg in 4800ms to midi out 3 with channel : 1 , command : 176 , data1 : 9 , data2 : 0 	#Cue B LED OFF
+	
+	# Cue DA
+	Send msg in 300ms to midi out 3 with channel : 1 , command : 176 , data1 : 17 , data2 : 127 	#Cue A LED ON
+	Send msg in 4700ms to midi out 3 with channel : 1 , command : 176 , data1 : 17 , data2 : 0	#Cue A LED OFF 
+	
+	#PlayPause B 
+	Send msg in 350ms to midi out 3 with channel : 1 , command : 176 , data1 : 10 , data2 : 127 	#Play/pause B LED ON
+	Send msg in 4700ms to midi out 3 with channel : 1 , command : 176 , data1 : 10 , data2 : 0	#Play/pause B LED OFF 
+
+	#Scratch A 	
+	Send msg in 500ms to midi out 3 with channel : 1 , command : 176 , data1 : 19 , data2 : 127 	#Scratch A LED ON
+	Send msg in 4600ms to midi out 3 with channel : 1 , command : 176 , data1 : 19 , data2 : 0 	#Scratch A LED OFF
+	
+	#Scratch DB
+	Send msg in 550ms to midi out 3 with channel : 1 , command : 176 , data1 : 11 , data2 : 127 	#Scratch B LED ON
+	Send msg in 4600ms to midi out 3 with channel : 1 , command : 176 , data1 : 11 , data2 : 0 	#Scratch B LED OFF
+	
+	#Sync slave DA
+	Send msg in 700ms to midi out 3 with channel : 1 , command : 176 , data1 : 20 , data2 : 127 	#Sync slave A LED ON
+	Send msg in 4500ms to midi out 3 with channel : 1 , command : 176 , data1 : 20 , data2 : 0 	#Sync slave A LED OFF
+	
+	#Sync slave B 
+	Send msg in 750ms to midi out 3 with channel : 1 , command : 176 , data1 : 12 , data2 : 127	#Sync slave B LED ON 
+	Send msg in 4500ms to midi out 3 with channel : 1 , command : 176 , data1 : 12 , data2 : 0 	#Sync slave B LED OFF
+	
+	#Loop out A 
+	Send msg in 900ms to midi out 3 with channel : 1 , command : 176 , data1 : 21 , data2 : 127 	#Loop out A LED ON
+	Send msg in 4400ms to midi out 3 with channel : 1 , command : 176 , data1 : 21 , data2 : 0	#Loop out A LED OFF 
+	
+	#Loop out DB
+	Send msg in 950ms to midi out 3 with channel : 1 , command : 176 , data1 : 13 , data2 : 127 	#Loop out B LED ON
+	Send msg in 4400ms to midi out 3 with channel : 1 , command : 176 , data1 : 13 , data2 : 0 	#Loop out B LED OFF
+
+	#Cut high DA
+	Send msg in 1100ms to midi out 3 with channel : 1 , command : 176 , data1 : 22 , data2 : 127 	#Cut high A LED ON
+	Send msg in 4300ms to midi out 3 with channel : 1 , command : 176 , data1 : 22 , data2 : 0 	#Cut high A LED OFF
+	
+	#Cut low DB
+	Send msg in 1150ms to midi out 3 with channel : 1 , command : 176 , data1 : 16 , data2 : 127 	#Cut low B LED ON	
+	Send msg in 4300ms to midi out 3 with channel : 1 , command : 176 , data1 : 16 , data2 : 0 	#Cut low B LED OFF
+
+	#Cut mid A 
+	Send msg in 1300ms to midi out 3 with channel : 1 , command : 176 , data1 : 23 , data2 : 127 	#Cut mid A LED ON
+	Send msg in 4300ms to midi out 3 with channel : 1 , command : 176 , data1 : 23 , data2 : 0 	#Cut mid A LED OFF
+
+	#Cut mid DB
+	Send msg in 1350ms to midi out 3 with channel : 1 , command : 176 , data1 : 15 , data2 : 127 	#Cut mid B LED ON 
+	Send msg in 4300ms to midi out 3 with channel : 1 , command : 176 , data1 : 15 , data2 : 0 	#Cut mid B LED OFF 
+
+	#Cut low A 
+	Send msg in 1500ms to midi out 3 with channel : 1 , command : 176 , data1 : 24 , data2 : 127 	#Cut low A LED ON
+	Send msg in 4300ms to midi out 3 with channel : 1 , command : 176 , data1 : 24 , data2 : 0 	#Cut low A LED OFF
+
+	#Cut high B 	
+	Send msg in 1550ms to midi out 3 with channel : 1 , command : 176 , data1 : 14 , data2 : 127	#Cut high B LED ON		 
+	Send msg in 4300ms to midi out 3 with channel : 1 , command : 176 , data1 : 14 , data2 : 0 	#Cut high B LED OFF
+
+	#Talkover	
+	Send msg in 1700ms to midi out 3 with channel : 1 , command : 176 , data1 : 8 , data2 : 127 	#Talkover LED ON
+	Send msg in 4200ms to midi out 3 with channel : 1 , command : 176 , data1 : 8 , data2 : 0 	#Talkover LED OFF
+	
+	#On air	
+	Send msg in 1900ms to midi out 3 with channel : 1 , command : 176 , data1 : 7 , data2 : 127 	#On air LED ON
+	Send msg in 4100ms to midi out 3 with channel : 1 , command : 176 , data1 : 7 , data2 : 0 	#On air	LED OFF
+	
+	#FX A
+	Send msg in 2100ms to midi out 3 with channel : 1 , command : 176 , data1 : 6 , data2 : 127 	#FX A LED ON
+	Send msg in 4100ms to midi out 3 with channel : 1 , command : 176 , data1 : 6 , data2 : 0 	#FX A LED OFF
+	
+	#FX B
+	Send msg in 2300ms to midi out 3 with channel : 1 , command : 176 , data1 : 5 , data2 : 127 	#FX B LED ON
+	Send msg in 4100ms to midi out 3 with channel : 1 , command : 176 , data1 : 5 , data2 : 0 	#FX B LED OFF
+
+	#Analog input A	
+	Send msg in 2500ms to midi out 3 with channel : 1 , command : 176 , data1 : 2 , data2 : 127 	#Analog input A LED ON
+	Send msg in 4200ms to midi out 3 with channel : 1 , command : 176 , data1 : 2 , data2 : 0	#Analog input A LED OFF 
+	
+	#FX C	
+	Send msg in 2700ms to midi out 3 with channel : 1 , command : 176 , data1 : 4 , data2 : 127 	#FX C LED ON
+	Send msg in 4100ms to midi out 3 with channel : 1 , command : 176 , data1 : 4 , data2 : 0	#FX C LED OFF 
+		
+	#Analog input B	
+	Send msg in 2900ms to midi out 3 with channel : 1 , command : 176 , data1 : 1 , data2 : 127 	#Analog input B LED ON
+	Send msg in 4200ms to midi out 3 with channel : 1 , command : 176 , data1 : 1 , data2 : 0 	#Analog input B LED OFF
+
+	#FX D	
+	Send msg in 3100ms to midi out 3 with channel : 1 , command : 176 , data1 : 3 , data2 : 127 	#FX D LED ON
+	Send msg in 4100ms to midi out 3 with channel : 1 , command : 176 , data1 : 3 , data2 : 0 	#FX D LED OFF
+
+	#Phones split	
+	Send msg in 3300ms to midi out 3 with channel : 1 , command : 176 , data1 : 25 , data2 : 127 	#Phones split LED ON
+	Send msg in 4000ms to midi out 3 with channel : 1 , command : 176 , data1 : 25 , data2 : 0 	#Phones split LED OFF
+
+
+	
+	######### MIDI RULES INTERNAL VARIABLES INITIALIZATION ## GLOBAL ####################	
+	
+	Create variable "GLOBAL_SNAP" 
+	Set variable "GLOBAL_SNAP" to 1
+	
+	Create variable "GLOBAL_SENSIBILITY" 
+	Set variable "GLOBAL_SENSIBILITY" to 3
+	
+	Create variable "GLOBAL_ZOOM" 
+	Set variable "GLOBAL_ZOOM"  to 1
+
+	Create variable "XFADER_POSITION" 
+	Set variable "XFADER_POSITION"  to 0
+
+	Create variable "SHIFT" 
+	Set variable "SHIFT"  to 0
+
+	Create variable "EX_VALUE" 
+	Set variable "EX_VALUE" to 0
+
+	Create variable "EX_TIME_LOOP_ADJ_A" 
+	Set variable "EX_TIME_LOOP_ADJ_A" to 0
+
+	######### MIDI RULES INTERNAL VARIABLES INITIALIZATION ## DECK A ####################
+	
+	Create variable "XFADER_START_PLAY_A" 
+	Set variable "XFADER_START_PLAY_A"  to 0
+
+	#Create variable "SHIFT_A"
+	#Set variable "SHIFT_A" to 0	
+
+	Create variable "PLAY_MODE_A"
+	Set variable "PLAY_MODE_A"to 0	
+	
+	Create variable "LOOP_MODE_A"
+	Set variable "LOOP_MODE_A"to 0	    #0->no loop     #1->sized loop      #2->custom loop
+
+	Create variable "LOOP_SIZE_A" 
+	Set variable "LOOP_SIZE_A" to 0
+	
+	#Create variable "LOOP_IN_A" 
+	#Set variable "LOOP_IN_A" to 0
+
+	Create variable "LOOP_IN_ADJUST_A" 
+	Set variable "LOOP_IN_ADJUST_A" to 0
+
+	Create variable "LOOP_OUT_ADJUST_A" 
+	Set variable "LOOP_OUT_ADJUST_A" to 0
+
+	Create variable "LOOP_MOVE_A"
+	Set variable "LOOP_MOVE_A"to 0
+
+	Create variable "HOLD_A" 
+	Set variable "HOLD_A" to 0
+	
+	Create variable "SEARCH_A" 
+	Set variable "SEARCH_A" to 0
+
+	Create variable "SCRATCH_MODE_A" 
+	Set variable "SCRATCH_MODE_A" to 0
+
+	Create variable "LOCK_KEY_A" 
+	Set variable "LOCK_KEY_A" to 0
+
+	Create variable "CUE_A" 
+	Set variable "CUE_A" to 0
+
+	Create variable "HOT_CUE_A_HOLD" 
+	Set variable "HOT_CUE_A_HOLD" to 0
+
+	Create variable "CUE_OPERATION_A" 
+	Set variable "CUE_OPERATION_A" to 0
+	
+	Create variable "REVERSE_MODE_A" 
+	Set variable "REVERSE_MODE_A" to 0
+	
+	Create variable "SYNC_MODE_A" 
+	Set variable "SYNC_MODE_A" to 0
+	
+	Create variable "TIME_STRETCH_A" 
+	Set variable "TIME_STRETCH_A" to 0
+	
+	Create variable "FX_A" 
+	Set variable "FX_A" to 1
+
+	
+	# FX1 Buttons
+	Create variable "FX1_BUTTON1_A" 
+	Set variable "FX1_BUTTON1_A" to 0	
+	
+	Create variable "FX1_BUTTON2_A" 
+	Set variable "FX1_BUTTON2_A" to 0	
+	
+	Create variable "FX1_BUTTON3_A" 
+	Set variable "FX1_BUTTON3_A" to 0	
+
+	Create variable "FX1_BUTTON4_A" 
+	Set variable "FX1_BUTTON4_A" to 0	
+
+	# FX2 Buttons
+	Create variable "FX2_BUTTON1_A" 
+	Set variable "FX2_BUTTON1_A" to 0	
+	
+	Create variable "FX2_BUTTON2_A" 
+	Set variable "FX2_BUTTON2_A" to 0	
+	
+	Create variable "FX2_BUTTON3_A" 
+	Set variable "FX2_BUTTON3_A" to 0	
+
+	Create variable "FX2_BUTTON4_A" 
+	Set variable "FX2_BUTTON4_A" to 0	
+	
+	# FX3 Buttons
+	Create variable "FX3_BUTTON1_A" 
+	Set variable "FX3_BUTTON1_A" to 0	
+	
+	Create variable "FX3_BUTTON2_A" 
+	Set variable "FX3_BUTTON2_A" to 0	
+	
+	Create variable "FX3_BUTTON3_A" 
+	Set variable "FX3_BUTTON3_A" to 0	
+
+	Create variable "FX3_BUTTON4_A" 
+	Set variable "FX3_BUTTON4_A" to 0	
+
+
+	######### MIDI RULES INTERNAL VARIABLES INITIALIZATION ## DECK B ####################
+	
+	Create variable "XFADER_START_PLAY_B" 
+	Set variable "XFADER_START_PLAY_B"  to 0
+
+	#Create variable "SHIFT_B"
+	#Set variable "SHIFT_B" to 0	
+
+	Create variable "PLAY_MODE_B"
+	Set variable "PLAY_MODE_B"to 0	
+	
+	Create variable "LOOP_MODE_B"
+	Set variable "LOOP_MODE_B"to 0	    #0->no loop     #1->sized loop      #2->custom loop
+	
+	Create variable "LOOP_SIZE_B" 
+	Set variable "LOOP_SIZE_B" to 0
+	
+	#Create variable "LOOP_IN_B" 
+	#Set variable "LOOP_IN_B" to 0
+
+	Create variable "LOOP_IN_ADJUST_B" 
+	Set variable "LOOP_IN_ADJUST_B" to 0
+
+	Create variable "LOOP_OUT_ADJUST_B" 
+	Set variable "LOOP_OUT_ADJUST_B" to 0
+
+	Create variable "LOOP_MOVE_B"
+	Set variable "LOOP_MOVE_B"to 0
+
+	Create variable "HOLD_B" 
+	Set variable "HOLD_B" to 0
+	
+	Create variable "SEARCH_B" 
+	Set variable "SEARCH_B" to 0
+
+	Create variable "SCRATCH_MODE_B" 
+	Set variable "SCRATCH_MODE_B" to 0
+
+	Create variable "LOCK_KEY_B" 
+	Set variable "LOCK_KEY_B" to 0
+
+	Create variable "CUE_B" 
+	Set variable "CUE_B" to 0
+
+	Create variable "HOT_CUE_B_HOLD" 
+	Set variable "HOT_CUE_B_HOLD" to 0
+
+	Create variable "CUE_OPERATION_B" 
+	Set variable "CUE_OPERATION_B" to 0
+	
+	Create variable "REVERSE_MODE_B" 
+	Set variable "REVERSE_MODE_B" to 0
+	
+	Create variable "SYNC_MODE_B" 
+	Set variable "SYNC_MODE_B" to 0
+	
+	Create variable "TIME_STRETCH_B" 
+	Set variable "TIME_STRETCH_B" to 0
+	
+	Create variable "FX_B" 
+	Set variable "FX_B" to 1
+
+	
+	# FX1 Buttons
+	Create variable "FX1_BUTTON1_B" 
+	Set variable "FX1_BUTTON1_B" to 0	
+	
+	Create variable "FX1_BUTTON2_B" 
+	Set variable "FX1_BUTTON2_B" to 0	
+	
+	Create variable "FX1_BUTTON3_B" 
+	Set variable "FX1_BUTTON3_B" to 0	
+
+	Create variable "FX1_BUTTON4_B" 
+	Set variable "FX1_BUTTON4_B" to 0	
+
+	# FX2 Buttons
+	Create variable "FX2_BUTTON1_B" 
+	Set variable "FX2_BUTTON1_B" to 0	
+	
+	Create variable "FX2_BUTTON2_B" 
+	Set variable "FX2_BUTTON2_B" to 0	
+	
+	Create variable "FX2_BUTTON3_B" 
+	Set variable "FX2_BUTTON3_B" to 0	
+
+	Create variable "FX2_BUTTON4_B" 
+	Set variable "FX2_BUTTON4_B" to 0	
+	
+	# FX3 Buttons
+	Create variable "FX3_BUTTON1_B" 
+	Set variable "FX3_BUTTON1_B" to 0	
+	
+	Create variable "FX3_BUTTON2_B" 
+	Set variable "FX3_BUTTON2_B" to 0	
+	
+	Create variable "FX3_BUTTON3_B" 
+	Set variable "FX3_BUTTON3_B" to 0	
+
+	Create variable "FX3_BUTTON4_B" 
+	Set variable "FX3_BUTTON4_B" to 0	
+
+
+
+
+end
+
+
+
+####################################################################################
+#################################### GLOBAL RULES  #################################
+####################################################################################
+
+############################ Cue A ############################
+
+#Midi Out: 74 Type:Button
+#Midi Out: 96 Type:Button
+
+rule "A:Cue On"
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 144
+		data1 is equal to 29
+		data2 is equal to 127
+		Variable "CUE_A" is equal to 0
+	then
+		Set variable "CUE_A" to 1
+		Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 8 , data2 : 127 	
+		Send msg to midi out 1 with channel : 9 , command : 176 , data1 : 74 , data2 : 127
+		Consume received msg
+end
+
+rule "A:Cue Off"
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 144
+		data1 is equal to 29
+		data2 is equal to 127
+		Variable "CUE_A" is equal to 1
+	then
+		Set variable "CUE_A" to 0
+		Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 8 , data2 : 0	
+		Send msg to midi out 1 with channel : 9 , command : 176 , data1 : 74 , data2 : 127
+		Consume received msg
+end
+
+rule "B:Cue On"
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 144
+		data1 is equal to 30
+		data2 is equal to 127
+		Variable "CUE_B" is equal to 0
+	then
+		Set variable "CUE_B" to 1
+		Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 7 , data2 : 127 	
+		Send msg to midi out 1 with channel : 9 , command : 176 , data1 : 96 , data2 : 127
+		Consume received msg
+end
+
+rule "B:Cue Off"
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 144
+		data1 is equal to 30
+		data2 is equal to 127
+		Variable "CUE_B" is equal to 1
+	then
+		Set variable "CUE_B" to 0
+		Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 7 , data2 : 0 	
+		Send msg to midi out 1 with channel : 9 , command : 176 , data1 : 96 , data2 : 127
+		Consume received msg
+end
+
+############################ Phone Mix ############################
+
+#Midi Out: 50 Type:Slider
+
+rule "Phone Mix"
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 176
+		data1 is equal to 17
+	then
+		Send msg to midi out 1 with channel : 9 , command : 176 , data1 : 50 , data2 : received_message_data2 
+		Consume received msg
+end
+
+############################ CrossFader (X-FADER BCD3000) ############################
+
+#Midi Out: 49 Type:Slider
+
+rule "CrossFader"
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 176
+		data1 is equal to 1	#X-Fader
+		Variable "SHIFT" is equal to 0
+	then
+		Send msg to midi out 1 with channel : 9 , command : 176 , data1 : 49 , data2 : received_message_data2 
+		Consume received msg
+end
+
+rule "CrossFader Start Play A"
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 176
+		data1 is equal to 1	#X-Fader
+		data2 is less than 54
+		Variable "XFADER_START_PLAY_A" is equal to 1
+		Variable "XFADER_POSITION" is not equal to 1
+		Variable "PLAY_MODE_A" is equal to 0
+	then
+		Set variable "XFADER_POSITION" to 1
+		Send msg to midi out 2 with channel : 1 , command : 176 , data1 : 6  , data2 : 127	#A:Play Loopback
+		Send msg to midi out 2 with channel : 1 , command : 176 , data1 : 8  , data2 : 127	#B:Exit play Loopback
+		Consume received msg
+end
+
+rule "B:Exit Play Loopback"
+	when
+		Receive msg
+		midi in is equal to 1 #Loopback
+		channel is equal to 1
+		command is equal to 176
+		data1 is equal to 8
+		data2 is equal to 127
+		Variable "XFADER_START_PLAY_B" is equal to 1
+	then
+		Send msg in 25ms to midi out 2 with channel : 1 , command : 176 , data1 : 15 , data2 : 127	#B:Exit Play with Cue Loopback
+		Send msg in 50ms to midi out 2 with channel : 1 , command : 176 , data1 : 17 , data2 : 127	#B:Exit Cue Loopback
+		Consume received msg
+end
+
+rule "CrossFader Start Play B"
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 176
+		data1 is equal to 1	#X-Fader
+		data2 is greater than 75
+		Variable "XFADER_START_PLAY_B" is equal to 1
+		Variable "XFADER_POSITION" is not equal to 2
+		Variable "PLAY_MODE_B" is equal to 0
+	then
+		Set variable "XFADER_POSITION" to 2
+		Send msg to midi out 2 with channel : 1 , command : 176 , data1 : 16 , data2 : 127	#B:Play Loopback
+		Send msg to midi out 2 with channel : 1 , command : 176 , data1 : 18 , data2 : 127	#A:Exit play Loopback
+		Consume received msg
+end
+
+rule "A:Exit Play Loopback"
+	when
+		Receive msg
+		midi in is equal to 1 #Loopback
+		channel is equal to 1
+		command is equal to 176
+		data1 is equal to 18
+		data2 is equal to 127
+		Variable "XFADER_START_PLAY_A" is equal to 1
+	then
+		Send msg in 25ms to midi out 2 with channel : 1 , command : 176 , data1 : 5 , data2 : 127	#A:Exit Play with Cue Loopback
+		Send msg in 50ms to midi out 2 with channel : 1 , command : 176 , data1 : 7 , data2 : 127	#A:Exit Cue Loopback
+		Consume received msg
+end
+
+############################ CrossFader Behaviour (X-FADER BCD3000) ############################
+
+#Midi Out: 97 Type:Fader #X-Fader Curve
+
+rule "CrossFader Curve"
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 176
+		data1 is equal to 1	#X-Fader
+		Variable "SHIFT" is equal to 1
+	then
+		Send msg to midi out 1 with channel : 9 , command : 176 , data1 : 97 , data2 : received_message_data2 
+		Consume received msg
+end
+
+############################ CrossFader Start Play Toggle (X-FADER BCD3000) #################
+
+#Midi Out: -- Type:Fader #X-Fader Start Play
+
+rule "A:CrossFader Start Play On"
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 144
+		data1 is equal to 35	#X-Fader Start Play Button
+		data2 is equal to 127
+		Variable "XFADER_START_PLAY_A" is equal to 0
+	then
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 110 , data2 : 127  	#Deck A Focus
+		Set variable "XFADER_START_PLAY_A" to 1
+		Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 2 , data2 : 127 #X-Fader Start Play LED ON
+		Consume received msg
+end
+
+rule "A:CrossFader Start Play Off"
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 144
+		data1 is equal to 35	#X-Fader Start Play Button
+		data2 is equal to 127
+		Variable "XFADER_START_PLAY_A" is equal to 1
+	then
+		Set variable "XFADER_START_PLAY_A" to 0
+		Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 2 , data2 : 0   #X-Fader Start Play LED ON
+		Consume received msg
+end
+
+rule "B:CrossFader Start Play On"
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 144
+		data1 is equal to 36	#X-Fader Start Play Button
+		data2 is equal to 127
+		Variable "XFADER_START_PLAY_B" is equal to 0
+	then
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 111 , data2 : 127  	#Deck B Focus
+
+		Set variable "XFADER_START_PLAY_B" to 1
+		Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 1 , data2 : 127 #X-Fader Start Play LED ON
+		Consume received msg
+end
+
+rule "B:CrossFader Start Play Off"
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 144
+		data1 is equal to 36	#X-Fader Start Play Button
+		data2 is equal to 127
+		Variable "XFADER_START_PLAY_B" is equal to 1
+	then
+		Set variable "XFADER_START_PLAY_B" to 0
+		Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 1 , data2 : 0   #X-Fader Start Play LED ON
+		Consume received msg
+end
+
+#################################### Shift ### DECK ###########################
+
+#Midi Out: 62 Type:Toggle
+
+rule "Shift On"
+salience -10
+	when
+		Receive msg 
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 144
+		data1 is equal to 28
+		data2 is equal to 127
+	then
+		Set variable "SHIFT" to 1
+		Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 25 , data2 : 127 #LED ON
+		Consume received msg
+end
+
+
+#Midi Out: 3 Type:Toggle
+rule "Shift Off"
+	when
+		Receive msg 
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 144
+		data1 is equal to 28	
+		data2 is equal to 0
+	then
+		Set variable "SHIFT" to 0
+		Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 25 , data2 : 0 #LED OFF
+		Consume received msg
+end
+
+
+################ EFFECTS SELECT FX Btn ###################################
+#Midi Out: 56 Type: BTN #FX Sel Previous
+#Midi Out: 57 Type: BTN #FX Sel Next
+
+rule "A:FX Sel Previous"	
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 144
+		data1 is equal to 32
+		data2 is equal to 127
+	then 
+		Send msg to midi out 1 with channel : 5 , command : 176 , data1 : 56 , data2 : 127 	 #FX Select Previous
+		Consume received msg
+end
+
+rule "A:FX Sel Next"	
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 144
+		data1 is equal to 33
+		data2 is equal to 127
+	then 
+		Send msg to midi out 1 with channel : 5 , command : 176 , data1 : 57 , data2 : 127 	 #FX Select Next
+		Consume received msg
+end
+
+
+
+################ EFFECTS FX KNOBS ##########################################
+#Midi Out: 63 Type: Fader  #FX1 Knob
+#Midi Out: 64 Type: Fader  #FX2 Knob
+#Midi Out: 65 Type: Fader  #FX3 Knob
+#Midi Out: 66 Type: Fader  #FX4 Knob
+
+rule "A:FX1 Knob"	
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 176
+		data1 is equal to 13
+	then 
+		Send msg to midi out 1 with channel : 5 , command : 176 , data1 : 63 , data2 : received_message_data2 	 #FX1 Knob
+		Consume received msg
+end
+
+rule "A:FX2 Knob"	
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 176
+		data1 is equal to 14
+	then 
+		Send msg to midi out 1 with channel : 5 , command : 176 , data1 : 64 , data2 : received_message_data2 	 #FX2 Knob
+		Consume received msg
+end
+
+rule "A:FX3 Knob"	
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 176
+		data1 is equal to 15
+	then 
+		Send msg to midi out 1 with channel : 5 , command : 176 , data1 : 65 , data2 : received_message_data2 	 #FX3 Knob
+		Consume received msg
+end
+
+rule "A:FX4 Knob"	
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 176
+		data1 is equal to 16
+	then 
+		Send msg to midi out 1 with channel : 5 , command : 176 , data1 : 66 , data2 : received_message_data2 	 #FX4 Knob
+		Consume received msg
+end
+
+################ EFFECTS FX Buttons #########################################
+#Midi Out: 70 Type: Fader  #FX1 Button
+#Midi Out: 71 Type: Fader  #FX2 Button
+#Midi Out: 72 Type: Fader  #FX3 Button
+#Midi Out: 73 Type: Fader  #FX4 Button
+
+rule "A:FX1 Button On"	
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 144
+		data1 is equal to 31
+		data2 is equal to 127
+		Variable "FX1_BUTTON1_A" is equal to 0
+	then 
+		Set variable "FX1_BUTTON1_A" to 1
+		Send msg to midi out 1 with channel : 5 , command : 144 , data1 : 70 , data2 : 127 	 #FX1 Button
+		Consume received msg
+end
+
+rule "A:FX1 Button Off"	
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 144
+		data1 is equal to 31
+		data2 is equal to 127
+		Variable "FX1_BUTTON1_A" is equal to 1
+	then 
+		Set variable "FX1_BUTTON1_A" to 0
+		Send msg to midi out 1 with channel : 5 , command : 144 , data1 : 70 , data2 : 127 	 #FX1 Button
+		Consume received msg
+end
+
+rule "A:FX2 Button On"	
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 144
+		data1 is equal to 34
+		data2 is equal to 127
+		Variable "FX1_BUTTON2_A" is equal to 0
+	then 
+		Set variable "FX1_BUTTON2_A" to 1
+		Send msg to midi out 1 with channel : 5 , command : 144 , data1 : 71 , data2 : 127 	 #FX2 Button
+		Consume received msg
+end
+
+rule "A:FX2 Button Off"	
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 144
+		data1 is equal to 34
+		data2 is equal to 127
+		Variable "FX1_BUTTON2_A" is equal to 1
+	then 
+		Set variable "FX1_BUTTON2_A" to 0
+		Send msg to midi out 1 with channel : 5 , command : 144 , data1 : 71 , data2 : 127 	 #FX2 Button
+		Consume received msg
+end
+
+
+####################################################################################
+###########################A and B Rules############################################
+
+
+
+####################################################################################
+#################################### A RULES    ####################################
+####################################################################################
+
+############################ DECK LEVEL ############## A DECK #####################################
+
+#Midi Out: 53 Type:Slider
+
+rule "A:Deck Level"
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 176	
+		data1 is equal to 0	
+	then
+		Send msg to midi out 1 with channel : 5 , command : 176 , data1 : 53 , data2 : received_message_data2 
+		Consume received msg
+end
+
+############################ Pitch Control ############## A DECK ##################################
+
+#Midi Out: 22 Type:Slider #TEMPO
+
+rule "A:Pitch"
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 176	
+		data1 is equal to 11
+		Variable "SHIFT" is equal to 0
+	then
+		Send msg to midi out 1 with channel : 3 , command : 176 , data1 : 22 , data2 : received_message_data2 
+		Consume received msg
+end
+
+############################ Pitch Reset ############## A DECK ##################################
+
+#Midi Out: 23 Type:Slider #TEMPO Reset
+
+rule "A:Tempo Reset"
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 176	
+		data1 is equal to 11
+		Variable "SHIFT" is equal to 1
+	then
+		Send msg to midi out 1 with channel : 3 , command : 176 , data1 : 23 , data2 : 127
+		Consume received msg
+end
+
+
+############################ EQ ############## A DECK #####################################
+
+#Midi Out: 18 Type: Fader #EQ Hi
+#Midi Out: 19 Type: Fader #EQ Mid
+#Midi Out: 20 Type: Fader #EQ Low
+
+rule "A:EQ Hi"
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 176	
+		data1 is equal to 5
+	then
+		Send msg to midi out 1 with channel : 3 , command : 176 , data1 : 18 , data2 : received_message_data2 
+		Consume received msg
+end
+
+rule "A:EQ Mid"
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 176	
+		data1 is equal to 4
+	then
+		Send msg to midi out 1 with channel : 3 , command : 176 , data1 : 19 , data2 : received_message_data2 
+		Consume received msg
+end
+
+rule "A:EQ Low"
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 176	
+		data1 is equal to 3
+	then
+		Send msg to midi out 1 with channel : 3 , command : 176 , data1 : 20 , data2 : received_message_data2 
+		Consume received msg
+end
+
+############################ BALANCE ############## A DECK #####################################
+
+#Midi Out: 21 Type:Fader #Balance
+
+rule "A:Balance"
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 176	
+		data1 is equal to 6
+	then
+		Send msg to midi out 1 with channel : 3 , command : 176 , data1 : 21 , data2 : received_message_data2 
+		Consume received msg
+end
+
+#################################### SYNC DECK ### A DECK ######################################
+
+#Midi Out: 17 Type:Hold   #Deck Tempo Sync A (Hold)
+#Midi Out: 18 Type:Toggle #Deck Phase Sync A (Hold)
+#Midi Out: 19 Type:Toggle #Deck Tempo Sync A (Toggle)
+
+#Midi Out: 45 Type:Toggle #Deck Tempo Sync B (Toggle)
+
+rule "A:Sync Hold"
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 144	
+		data1 is equal to 4
+		data2 is equal to 127
+		Variable "SHIFT" is equal to 0
+		Variable "SYNC_MODE_A" is equal to 0
+	then
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 110 , data2 : 127  	#Deck A Focus
+
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 17 , data2 : 127    #Deck Tempo Sync A (Hold)
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 18 , data2 : 127    #Deck Phase Sync A (Hold)
+
+		Set variable "SYNC_MODE_A" to 0
+		#Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 22 , data2 : 127 	#Sync Led On
+		Consume received msg
+end
+
+
+rule "A:Sync Release"
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 144
+		data1 is equal to 4
+		data2 is equal to 0
+		Variable "SHIFT" is equal to 0
+		Variable "SYNC_MODE_A" is equal to 0
+	then
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 18 , data2 : 0    #Deck Phase Sync A (Hold)
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 17 , data2 : 0    #Deck Tempo Sync A (Hold)
+
+		Set variable "SYNC_MODE_A" to 0
+		#Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 22 , data2 : 0 	#Sync Led On
+		Consume received msg
+end
+
+
+rule "A:Sync Lock On. A wasn't Syncd with B"
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 144
+		data1 is equal to 4
+		data2 is equal to 127
+		Variable "SHIFT" is equal to 1
+		Variable "SYNC_MODE_A" is equal to 0
+	then
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 19 , data2 : 127    #Deck Tempo Sync A (Toggle)
+		Set variable "SYNC_MODE_A" to 1
+		#Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 22 , data2 : 127 	#Sync Led On
+		Consume received msg
+end
+
+
+rule "A:Sync Lock On. A and B were syncd"
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 144
+		data1 is equal to 4
+		data2 is equal to 127
+		Variable "SHIFT" is equal to 1
+		Variable "SYNC_MODE_A" is equal to 0
+		Variable "SYNC_MODE_B" is equal to 1
+	then
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 19 , data2 : 127    #Deck Tempo Sync A (Toggle)
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 45 , data2 : 127    #Deck Tempo Sync B (Toggle)
+		Set variable "SYNC_MODE_A" to 1
+		Set variable "SYNC_MODE_B" to 0
+		#Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 22 , data2 : 127 	#Sync Led On A
+		#Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 26 , data2 : 0 	#Sync Led Off B
+		Consume received msg
+end
+
+
+rule "A:Sync Lock Off A"
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 144
+		data1 is equal to 4
+		data2 is equal to 127
+		#Variable "SHIFT" is equal to 1
+		Variable "SYNC_MODE_A" is equal to 1
+	then
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 19 , data2 : 127    #Deck Tempo Sync A (Toggle)
+		Set variable "SYNC_MODE_A" to 0
+		#Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 22 , data2 : 0 	#Sync Led Off A
+		Consume received msg
+end
+
+
+####################################  SCRATCH MODE / PLATTER HOLD ### A DECK #######
+
+#Midi Out: 12 Type:Toggle #Scratch Toggle
+#Midi Out: 20 Type:Hold	  #Deck Scratch Hold	
+
+rule "A:Scratch Mode"	
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 144
+		data1 is equal to 17
+		data2 is equal to 127
+		Variable "SCRATCH_MODE_A" is equal to 0
+	then 
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 110 , data2 : 127  	#Deck A Focus
+	    	Set variable "HOLD_A" to 0
+		Set variable "SCRATCH_MODE_A" to 1
+		#Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 12 , data2 : 127	#Deck Scratch ON (Toggle)
+		#Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 12 , data2 : 127	#Deck Scratch Off (Toggle)
+		Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 19 , data2 : 127 	#Scratch LED A On
+		Consume received msg
+end
+
+rule "A:Exit Scratch Mode"	
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 144
+		data1 is equal to 17
+		data2 is equal to 127
+		Variable "SCRATCH_MODE_A" is equal to 1
+	then 
+	    	Set variable "HOLD_A" to 0
+		Set variable "SCRATCH_MODE_A" to 0
+		#Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 12 , data2 : 127	#Deck Scratch Off (Toggle)
+		Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 19 , data2 : 0	#Scratch LED A Off
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 20 , data2 : 0	#Deck Hold Off
+		Consume received msg
+end
+
+/*
+rule "A:Platter Hold"	
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 176
+		data1 is equal to 17
+		data2 is equal to 127
+	then 
+	    	Set variable "HOLD_A" to 1
+		#Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 12 , data2 : 127	#Deck Scratch ON (Toggle)
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 20 , data2 : 127	#Deck Hold On
+		Consume received msg
+end
+
+rule "A:Platter Release"	
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 176
+		data1 is equal to 17
+		data2 is equal to 0
+	then 
+	    	Set variable "HOLD_A" to 0
+		#Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 12 , data2 : 0	#Deck Scratch Off (Toggle)
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 20 , data2 : 0	#Deck Hold Off
+		Consume received msg
+end
+*/
+
+############################ PLAY / CUE ############## A DECK #####################################
+
+#Midi Out: 1  Type:Toggle #Deck Cue/play instant A
+#Midi Out: 2  Type:Toggle #Deck Cue/plause instant A
+#Midi Out: 3  Type:Toggle #Deck play/pause A
+#Midi Out: 20 Type:Toggle #Deck Hold
+
+/*
+PLAYMODE
+	STOP	0
+	CUE	1
+	PLAY	2
+	PLAYCUE	3
+	PLAHOLD	4
+
+*/
+
+rule "A:Cue"
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 144
+		data1 is equal to 19
+		data2 is equal to 127
+		Variable "PLAY_MODE_A" is equal to 0
+	then
+	    	Set variable "PLAY_MODE_A" to 1
+		Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 17 , data2 : 127	#Cue A LED ON
+		Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 18 , data2 : 127	#play/pause A LED On
+		#Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 0 , data2 : 127	#play/pause A LED Blinking On
+
+	    	Set variable "HOLD_A" to 0
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 20 , data2 : 0	#Deck Hold Off
+
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 110 , data2 : 127  	#Deck A Focus
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 1  , data2 : 127  	#Deck Cue/play instant A On
+		Consume received msg
+end
+
+rule "A:Exit Cue Loopback"
+	when
+		Receive msg
+		midi in is equal to 1 #Loopback
+		channel is equal to 1
+		command is equal to 176
+		data1 is equal to 7
+		data2 is equal to 127
+	then
+	    	Set variable "PLAY_MODE_A" to 0
+		Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 17 , data2 : 0		#Cue A LED Off
+		Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 18 , data2 : 0		#play/pause A LED Off
+		#Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 0 , data2 : 127	#play/pause A LED Blinking On
+
+	    	Set variable "HOLD_A" to 1
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 20 , data2 : 127	#Deck Hold On
+
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 2 , data2 : 127  	#Deck cue/pause instant A On
+		Consume received msg
+end
+
+
+
+rule "A:Exit Cue"
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 144
+		data1 is equal to 19
+		data2 is equal to 0
+		Variable "PLAY_MODE_A" is equal to 1
+	then
+		Send msg to midi out 2 with channel : 1 , command : 176 , data1 : 7 , data2 : 127	#Cue Loopback
+		Consume received msg
+end
+
+rule "A:Play Loopback"
+	when
+		Receive msg
+		midi in is equal to 1 #Loopback
+		channel is equal to 1
+		command is equal to 176
+		data1 is equal to 6
+		data2 is equal to 127
+	then
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 110 , data2 : 127  	#Deck A Focus
+
+	    	Set variable "PLAY_MODE_A" to 2
+		Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 18 , data2 : 127	#play/pause A LED ON
+		#Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 0 , data2 : 0		#play/pause A LED Blinking Off
+
+	    	Set variable "HOLD_A" to 0
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 20 , data2 : 0	#Deck Hold Off
+
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 3 , data2 : 127  	#Deck play/pause A On
+		Consume received msg
+end
+
+
+rule "A:Play"
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 144
+		data1 is equal to 18
+		data2 is equal to 127
+		Variable "PLAY_MODE_A" is equal to 0
+	then
+		Send msg to midi out 2 with channel : 1 , command : 176 , data1 : 6 , data2 : 127	#Play Loopback
+		Consume received msg
+end
+
+
+rule "A:Exit Play"
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 144
+		data1 is equal to 18
+		data2 is equal to 127
+		Variable "PLAY_MODE_A" is equal to 2
+	then
+	    	Set variable "PLAY_MODE_A" to 0
+		Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 18 , data2 : 0		#Play/Pause A LED OFF
+		#Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 0 , data2 : 127	#play/pause A LED Blinking
+
+	    	Set variable "HOLD_A" to 1
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 20 , data2 : 127	#Deck Hold On
+
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 3 , data2 : 127  	#Deck play/pause A On
+		Consume received msg
+end
+
+
+rule "A:Exit Play Pressing Cue Loopback"
+	when
+		Receive msg
+		midi in is equal to 1 #Loopback
+		channel is equal to 1
+		command is equal to 176
+		data1 is equal to 5
+		data2 is equal to 127
+	then
+	    	Set variable "PLAY_MODE_A" to 1
+		Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 17 , data2 : 127	#Deck Cue/Play A LED On
+		Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 18 , data2 : 0		#Play/Pause A LED OFF
+		#Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 0 , data2 : 127	#play/pause A LED Blinking On
+
+	    	Set variable "HOLD_A" to 1
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 20 , data2 : 127	#Deck Hold On
+
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 1 , data2 : 127  	#Deck Cue/play instant A On
+		Consume received msg
+end
+
+
+rule "A:Exit Play Pressing CUE"
+	when
+
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 144
+		data1 is equal to 19
+		data2 is equal to 127
+		Variable "PLAY_MODE_A" is equal to 2
+	then
+		Send msg to midi out 2 with channel : 1 , command : 176 , data1 : 5 , data2 : 127	#Cue Loopback
+		Consume received msg
+end
+
+
+rule "A:PlayCUE"
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 144
+		data1 is equal to 18
+		data2 is equal to 127
+		Variable "PLAY_MODE_A" is equal to 1
+	then
+	    	Set variable "PLAY_MODE_A" to 3
+		Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 18 , data2 : 127	#play/pause A LED ON
+		#Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 0 , data2 : 0		#play/pause A LED Blinking Off
+
+	    	Set variable "HOLD_A" to 0
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 20 , data2 : 0	#Deck Hold Off
+		Consume received msg
+end
+
+
+rule "A:Exit PLAYCUE Pressing PLAY"
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 144
+		data1 is equal to 18
+		data2 is equal to 127
+		Variable "PLAY_MODE_A" is equal to 3
+	then
+	    	Set variable "PLAY_MODE_A" to 0
+		Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 18 , data2 : 0		#play/pause A LED Off
+		#Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 0 , data2 : 127	#play/pause A LED Blinking On
+		Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 17 , data2 : 0		#cue/play A LED Off
+
+	    	Set variable "HOLD_A" to 1
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 20 , data2 : 127	#Deck Hold On
+
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 3 , data2 : 127  	#Deck play/pause A On
+		Consume received msg
+end
+
+
+rule "A:Exit PLAYCUE Pressing CUE"
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 144
+		data1 is equal to 19
+		data2 is equal to 127
+		Variable "PLAY_MODE_A" is equal to 3
+	then
+		#Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 19 , data2 : 0			#play/pause A LED Blinking Off
+		Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 17 , data2 : 0			#cue/play A LED Off
+		Send msg in 125ms to midi out 3 with channel : 1 , command : 176 , data1 : 17 , data2 : 127	#cue/play A LED On
+		Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 18 , data2 : 0			#play/pause A LED Off
+		Send msg in 125ms to midi out 3 with channel : 1 , command : 176 , data1 : 18 , data2 : 127	#play/pause A LED On
+
+	    	Set variable "HOLD_A" to 0
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 20 , data2 : 0	#Deck Hold Off
+
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 1 , data2 : 127  	#Deck Cue/play instant A On
+		Consume received msg
+end
+
+
+#################################### PLAY REVERSE MODE ### A DECK ##################
+
+#Midi Out: 4 Type:Toggle
+
+rule "A:Play Reverse"
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 144
+		data1 is equal to 18
+		data2 is equal to 127
+		Variable "SHIFT" is equal to 1
+	then
+	    	Set variable "PLAY_MODE_A" to 2
+		Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 17 , data2 : 127	#play/pause A LED ON
+
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 4 , data2 : 127  	#Deck Play Reverse On
+		Consume received msg
+end
+
+
+
+
+####################################  DECK Scratch WITH JOG ### A DECK #######
+
+#Midi Out: 9  Type: Rotary Encoder 3F/41, Sensibility 1%, Accelaration 2% #Deck Scratch
+#Midi Out: 20 Type: Toggle #Deck Scratch on
+
+#Music stopped
+rule "A:Deck Scratch BWD Factor 1"
+	when
+		Receive msg
+		midi in is equal to 1 #Loopback
+		channel is equal to 1
+		command is equal to 176
+		data1 is equal to 4
+		data2 is equal to 127
+		Variable "GLOBAL_SENSIBILITY" is equal to 1
+	then
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 20 , data2 : 127		#Deck Hold On
+		Send msg to midi out 1 with channel : 1 , command : 176 , data1 : 9  , data2 : 63		#Deck Scratch
+		Send msg in 200ms to midi out 1 with channel : 3 , command : 144 , data1 : 20 , data2 : 0	#Deck Hold Off
+		Consume received msg
+
+end
+
+rule "A:Deck Scratch BWD Factor 2"
+	when
+		Receive msg
+		midi in is equal to 1 #Loopback
+		channel is equal to 1
+		command is equal to 176
+		data1 is equal to 4
+		data2 is equal to 127
+		Variable "GLOBAL_SENSIBILITY" is equal to 2
+	then
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 20 , data2 : 127		#Deck Hold On
+		Send msg to midi out 1 with channel : 1 , command : 176 , data1 : 9  , data2 : 63		#Deck Scratch
+		Send msg in 300ms to midi out 1 with channel : 3 , command : 144 , data1 : 20 , data2 : 0	#Deck Hold Off
+		Consume received msg
+
+end
+
+rule "A:Deck Scratch BWD Factor 3"
+	when
+		Receive msg
+		midi in is equal to 1 #Loopback
+		channel is equal to 1
+		command is equal to 176
+		data1 is equal to 4
+		data2 is equal to 127
+		Variable "GLOBAL_SENSIBILITY" is equal to 3
+	then
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 20 , data2 : 127		#Deck Hold On
+		Send msg to midi out 1 with channel : 1 , command : 176 , data1 : 9  , data2 : 63		#Deck Scratch
+		Send msg in 400ms to midi out 1 with channel : 3 , command : 144 , data1 : 20 , data2 : 0	#Deck Hold Off
+		Consume received msg
+
+end
+
+rule "A:Scratch BWD with Jog. Scratch Mode On"	
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 176
+		data1 is equal to 19
+		data2 is equal to 63
+		Variable "SEARCH_A" is equal to 0
+		Variable "HOLD_A" is equal to 0
+		Variable "SCRATCH_MODE_A" is equal to 1
+		Variable "LOOP_IN_ADJUST_A" is equal to 0
+		Variable "LOOP_OUT_ADJUST_A" is equal to 0
+	then 
+		Send msg to midi out 2 with channel : 1 , command : 176 , data1 : 4 , data2 : 127	#Deck Scratch Loopback
+		Consume received msg
+end
+
+
+rule "A:Deck Scratch FWD Factor 1"
+	when
+		Receive msg
+		midi in is equal to 1 #Loopback
+		channel is equal to 1
+		command is equal to 176
+		data1 is equal to 4
+		data2 is equal to 1
+		Variable "GLOBAL_SENSIBILITY" is equal to 1
+	then
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 20 , data2 : 127		#Deck Hold On
+		Send msg to midi out 1 with channel : 1 , command : 176 , data1 : 9  , data2 : 65		#Deck Scratch
+		Send msg in 200ms to midi out 1 with channel : 3 , command : 144 , data1 : 20 , data2 : 0	#Deck Hold Off
+		Consume received msg
+
+end
+
+rule "A:Deck Scratch FWD Factor 2"
+	when
+		Receive msg
+		midi in is equal to 1 #Loopback
+		channel is equal to 1
+		command is equal to 176
+		data1 is equal to 4
+		data2 is equal to 1
+		Variable "GLOBAL_SENSIBILITY" is equal to 2
+	then
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 20 , data2 : 127		#Deck Hold On
+		Send msg to midi out 1 with channel : 1 , command : 176 , data1 : 9  , data2 : 65		#Deck Scratch
+		Send msg in 300ms to midi out 1 with channel : 3 , command : 144 , data1 : 20 , data2 : 0	#Deck Hold Off
+		Consume received msg
+
+end
+
+rule "A:Deck Scratch FWD Factor 3"
+	when
+		Receive msg
+		midi in is equal to 1 #Loopback
+		channel is equal to 1
+		command is equal to 176
+		data1 is equal to 4
+		data2 is equal to 1
+		Variable "GLOBAL_SENSIBILITY" is equal to 3
+	then
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 20 , data2 : 127		#Deck Hold On
+		Send msg to midi out 1 with channel : 1 , command : 176 , data1 : 9  , data2 : 65		#Deck Scratch
+		Send msg in 400ms to midi out 1 with channel : 3 , command : 144 , data1 : 20 , data2 : 0	#Deck Hold Off
+		Consume received msg
+
+end
+
+rule "A:Scratch FWD with Jog. Scratch Mode On"	
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 176
+		data1 is equal to 19
+		data2 is equal to 65
+		Variable "SEARCH_A" is equal to 0
+		Variable "HOLD_A" is equal to 0
+		Variable "SCRATCH_MODE_A" is equal to 1
+		Variable "LOOP_IN_ADJUST_A" is equal to 0
+		Variable "LOOP_OUT_ADJUST_A" is equal to 0
+	then 
+		Send msg to midi out 2 with channel : 1 , command : 176 , data1 : 4 , data2 : 1		#Deck Scratch Loopback
+		Consume received msg
+end
+
+#Music playing
+rule "A:Scratch BWD with Jog. Platter Held"	
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 176
+		data1 is equal to 19
+		data2 is equal to 63
+		Variable "SEARCH_A" is equal to 0
+		Variable "HOLD_A" is equal to 1
+		Variable "LOOP_IN_ADJUST_A" is equal to 0
+		Variable "LOOP_OUT_ADJUST_A" is equal to 0
+	then 
+		Send msg to midi out 1 with channel : 1 , command : 176 , data1 : 9  , data2 : 63	#Deck Scratch
+		Consume received msg
+end
+
+rule "A:Scratch FWD with Jog. Platter Held"	
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 176
+		data1 is equal to 19
+		data2 is equal to 65
+		Variable "SEARCH_A" is equal to 0
+		Variable "HOLD_A" is equal to 1
+		Variable "LOOP_IN_ADJUST_A" is equal to 0
+		Variable "LOOP_OUT_ADJUST_A" is equal to 0
+	then 
+		Send msg to midi out 1 with channel : 1 , command : 176 , data1 : 9  , data2 : 65	#Deck Scratch
+		Consume received msg
+end
+
+
+####################################  DECK PITCH BEND WITH JOG ### A DECK #######
+
+#Midi Out: 10 Type: Button Down #Deck Pitch Bend Down
+#Midi Out: 11 Type: Button Up #Deck Pitch Bend Up 
+
+rule "A:Pitch Bend Down Factor 1"
+	when
+		Receive msg
+		midi in is equal to 1 #Loopback
+		channel is equal to 1
+		command is equal to 176
+		data1 is equal to 3
+		data2 is equal to 127
+		Variable "GLOBAL_SENSIBILITY" is equal to 1
+	then
+		Send msg to midi out 1 with channel : 1 , command : 176 , data1 : 10 , data2 : 127	#Deck Pitch Bend Down
+		Send msg in 200ms to midi out 1 with channel : 1 , command : 176 , data1 : 10 , data2 : 0 #Deck Pitch Bend Down
+		Consume received msg
+
+end
+
+rule "A:Pitch Bend Down Factor 2"
+	when
+		Receive msg
+		midi in is equal to 1 #Loopback
+		channel is equal to 1
+		command is equal to 176
+		data1 is equal to 3
+		data2 is equal to 127
+		Variable "GLOBAL_SENSIBILITY" is equal to 2
+	then
+		Send msg to midi out 1 with channel : 1 , command : 176 , data1 : 10 , data2 : 127	#Deck Pitch Bend Down
+		Send msg in 300ms to midi out 1 with channel : 1 , command : 176 , data1 : 10 , data2 : 0 #Deck Pitch Bend Down
+		Consume received msg
+
+end
+
+rule "A:Pitch Bend Down Factor 3"
+	when
+		Receive msg
+		midi in is equal to 1 #Loopback
+		channel is equal to 1
+		command is equal to 176
+		data1 is equal to 3
+		data2 is equal to 127
+		Variable "GLOBAL_SENSIBILITY" is equal to 3
+	then
+		Send msg to midi out 1 with channel : 1 , command : 176 , data1 : 10 , data2 : 127	#Deck Pitch Bend Down
+		Send msg in 400ms to midi out 1 with channel : 1 , command : 176 , data1 : 10 , data2 : 0 #Deck Pitch Bend Down
+		Consume received msg
+
+end
+
+rule "A:Pitch Bend Down with Jog"	
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 176
+		data1 is equal to 19
+		data2 is equal to 63
+
+		Variable "PLAY_MODE_A" is not equal to 0
+		Variable "HOLD_A" is equal to 0
+		Variable "SEARCH_A" is equal to 0
+		Variable "SCRATCH_MODE_A" is equal to 0
+		Variable "LOOP_IN_ADJUST_A" is equal to 0
+		Variable "LOOP_OUT_ADJUST_A" is equal to 0
+	then 
+		Send msg to midi out 2 with channel : 1 , command : 176 , data1 : 3 , data2 : 127	#Loopback Pitch Bend Down
+		Consume received msg
+end
+
+rule "A:Pitch Bend Up Factor 1"
+	when
+		Receive msg
+		midi in is equal to 1 #Loopback
+		channel is equal to 1
+		command is equal to 176
+		data1 is equal to 3
+		data2 is equal to 1
+		Variable "GLOBAL_SENSIBILITY" is equal to 1
+	then
+		Send msg to midi out 1 with channel : 1 , command : 176 , data1 : 11 , data2 : 127	#Deck Pitch Bend 
+		Send msg in 200ms to midi out 1 with channel : 1 , command : 176 , data1 : 11 , data2 : 0 #Deck Pitch Bend 
+		Consume received msg
+
+end
+
+rule "A:Pitch Bend Up Factor 2"
+	when
+		Receive msg
+		midi in is equal to 1 #Loopback
+		channel is equal to 1
+		command is equal to 176
+		data1 is equal to 3
+		data2 is equal to 1
+		Variable "GLOBAL_SENSIBILITY" is equal to 2
+	then
+		Send msg to midi out 1 with channel : 1 , command : 176 , data1 : 11 , data2 : 127	#Deck Pitch Bend Up
+		Send msg in 300ms to midi out 1 with channel : 1 , command : 176 , data1 : 11 , data2 : 0 #Deck Pitch Bend Up
+		Consume received msg
+
+end
+
+rule "A:Pitch Bend Up Factor 3"
+	when
+		Receive msg
+		midi in is equal to 1 #Loopback
+		channel is equal to 1
+		command is equal to 176
+		data1 is equal to 3
+		data2 is equal to 1
+		Variable "GLOBAL_SENSIBILITY" is equal to 3
+	then
+		Send msg to midi out 1 with channel : 1 , command : 176 , data1 : 11 , data2 : 127	#Deck Pitch Bend Up
+		Send msg in 400ms to midi out 1 with channel : 1 , command : 176 , data1 : 11 , data2 : 0 #Deck Pitch Bend Up
+		Consume received msg
+
+end
+
+rule "A:Pitch Bend Up with Jog"	
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 176
+		data1 is equal to 19
+		data2 is equal to 65
+
+		Variable "PLAY_MODE_A" is not equal to 0
+		Variable "HOLD_A" is equal to 0
+		Variable "SEARCH_A" is equal to 0
+		Variable "SCRATCH_MODE_A" is equal to 0
+		Variable "LOOP_IN_ADJUST_A" is equal to 0
+		Variable "LOOP_OUT_ADJUST_A" is equal to 0
+	then 
+		Send msg to midi out 2 with channel : 1 , command : 176 , data1 : 3 , data2 : 1	#Loopback Pitch Bend Up
+		Consume received msg
+end
+
+####################################  DECK SEARCH WITH JOG ### A DECK #######
+
+#Midi Out: 12 Type: Encoder Sensibility 10% #Deck Search Bwd
+#Midi Out: 13 Type: Encoder Sensibility 10% #Deck Search Fwd
+
+rule "A:SEARCH BWD with Jog"	
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 176
+		data1 is equal to 19
+		data2 is equal to 63
+		Variable "SEARCH_A" is equal to 1
+		Variable "LOOP_IN_ADJUST_A" is equal to 0
+		Variable "LOOP_OUT_ADJUST_A" is equal to 0
+	then 
+		Send msg to midi out 1 with channel : 1 , command : 176 , data1 : 12 , data2 : 127		#Deck SEARCH Bwd
+		Send msg in 20ms to midi out 1 with channel : 1 , command : 176 , data1 : 12 , data2 : 0	#Deck SEARCH
+		Consume received msg
+end
+
+rule "A:SEARCH FWD with Jog"	
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 176
+		data1 is equal to 19
+		data2 is equal to 65
+		Variable "SEARCH_A" is equal to 1
+		Variable "LOOP_IN_ADJUST_A" is equal to 0
+		Variable "LOOP_OUT_ADJUST_A" is equal to 0
+	then 
+		Send msg to midi out 1 with channel : 1 , command : 176 , data1 : 13 , data2 : 127		#Deck SEARCH Fwd
+		Send msg in 20ms to midi out 1 with channel : 1 , command : 176 , data1 : 13 , data2 : 0	#Deck SEARCH
+		Consume received msg
+end
+
+########################### LOOP IN ADJUST / OUT ADJUST WITH JOG ## A DECK ############################
+#Midi Out: 14 Type: Hold #Adjust In BWD
+#Midi Out: 15 Type: Hold #Adjust In FWD
+
+#Midi Out: 16 Type: Hold #Adjust Out BWD
+#Midi Out: 17 Type: Hold #Adjust Out FWD
+
+rule "A:Loop In FINE Adjust BWD"	
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 176
+		data1 is equal to 19
+		data2 is equal to 63
+		Variable "LOOP_IN_ADJUST_A" is equal to 1
+		Variable "LOOP_MODE_A" is not equal to 0
+	then 
+		Set variable "LOOP_SIZE_A" to 0
+		Send msg to midi out 1 with channel : 1 , command : 176 , data1 : 14 , data2 : 127	#Adjust In BWD
+		Send msg in 10ms to midi out 1 with channel : 1 , command : 176 , data1 : 14 , data2 : 0	#Adjust In BWD
+		Send msg in 11ms to midi out 1 with channel : 1 , command : 176 , data1 : 14 , data2 : 127	#Adjust In BWD
+		Send msg in 20ms to midi out 1 with channel : 1 , command : 176 , data1 : 14 , data2 : 0	#Adjust In BWD
+		Send msg in 21ms to midi out 1 with channel : 1 , command : 176 , data1 : 14 , data2 : 127	#Adjust In BWD
+		Send msg in 30ms to midi out 1 with channel : 1 , command : 176 , data1 : 14 , data2 : 0	#Adjust In BWD
+		Consume received msg 
+end
+
+rule "A:Loop In FINE Adjust FWD"	
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 176
+		data1 is equal to 19
+		data2 is equal to 65
+		Variable "LOOP_IN_ADJUST_A" is equal to 1
+		Variable "LOOP_MODE_A" is not equal to 0
+	then 
+		Set variable "LOOP_SIZE_A" to 0
+		Send msg to midi out 1 with channel : 1 , command : 176 , data1 : 15 , data2 : 127	#Adjust In FWD
+		Send msg in 10ms to midi out 1 with channel : 1 , command : 176 , data1 : 15 , data2 : 0	#Adjust In FWD
+		Send msg in 11ms to midi out 1 with channel : 1 , command : 176 , data1 : 15 , data2 : 127	#Adjust In FWD
+		Send msg in 20ms to midi out 1 with channel : 1 , command : 176 , data1 : 15 , data2 : 0	#Adjust In FWD
+		Send msg in 21ms to midi out 1 with channel : 1 , command : 176 , data1 : 15 , data2 : 127	#Adjust In FWD
+		Send msg in 30ms to midi out 1 with channel : 1 , command : 176 , data1 : 15 , data2 : 0	#Adjust In FWD
+		Consume received msg
+end
+
+rule "A:Loop Out FINE Adjust BWD"	
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 176
+		data1 is equal to 19
+		data2 is equal to 63
+		Variable "LOOP_OUT_ADJUST_A" is equal to 1
+		Variable "LOOP_MODE_A" is not equal to 0
+	then 
+		Set variable "LOOP_SIZE_A" to 0
+		Send msg to midi out 1 with channel : 1 , command : 176 , data1 : 16 , data2 : 127	#Adjust Out BWD
+		Send msg in 10ms to midi out 1 with channel : 1 , command : 176 , data1 : 16 , data2 : 0	#Adjust Out BWD
+		Send msg in 11ms to midi out 1 with channel : 1 , command : 176 , data1 : 16 , data2 : 127	#Adjust Out BWD
+		Send msg in 20ms to midi out 1 with channel : 1 , command : 176 , data1 : 16 , data2 : 0	#Adjust Out BWD
+		Send msg in 21ms to midi out 1 with channel : 1 , command : 176 , data1 : 16 , data2 : 127	#Adjust Out BWD
+		Send msg in 30ms to midi out 1 with channel : 1 , command : 176 , data1 : 16 , data2 : 0	#Adjust Out BWD
+	Consume received msg
+end
+
+rule "A:Loop Out FINE Adjust FWD"	
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 176
+		data1 is equal to 19
+		data2 is equal to 65
+		Variable "LOOP_OUT_ADJUST_A" is equal to 1
+		Variable "LOOP_MODE_A" is not equal to 0
+	then 
+		Set variable "LOOP_SIZE_A" to 0
+		Send msg to midi out 1 with channel : 1 , command : 176 , data1 : 17 , data2 : 127	#Adjust Out FWD
+		Send msg in 10ms to midi out 1 with channel : 1 , command : 176 , data1 : 17 , data2 : 0	#Adjust Out FWD
+		Send msg in 11ms to midi out 1 with channel : 1 , command : 176 , data1 : 17 , data2 : 127	#Adjust Out FWD
+		Send msg in 20ms to midi out 1 with channel : 1 , command : 176 , data1 : 17 , data2 : 0	#Adjust Out FWD
+		Send msg in 21ms to midi out 1 with channel : 1 , command : 176 , data1 : 17 , data2 : 127	#Adjust Out FWD
+		Send msg in 30ms to midi out 1 with channel : 1 , command : 176 , data1 : 17 , data2 : 0	#Adjust Out FWD
+		Consume received msg
+end
+
+
+####################################  PITCH BEND WITH BUTTON ### A DECK #######
+
+#Midi Out: 13 Type: Button Up #Pitch Bend Down
+#Midi Out: 14 Type: Button Up #Pitch Bend Up
+#Midi Out: 15 Type: Button Up #PITCH RANGE 8/35/50/100 Down
+#Midi Out: 16 Type: Button Up #PITCH RANGE 8/35/50/100 Up
+
+rule "A:Pitch Bend Down"	
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 144
+		data1 is equal to 2
+		data2 is equal to 127
+		Variable "SHIFT" is equal to 0
+	then 
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 13 , data2 : 127	#Pitch Bend Down
+		Consume received msg
+end
+
+rule "A:Pitch Bend Down Release"	
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 144
+		data1 is equal to 2
+		data2 is equal to 0
+		Variable "SHIFT" is equal to 0
+	then 
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 13 , data2 : 0	#Pitch Bend Down
+		Consume received msg
+end
+
+rule "A:Pitch Bend Up"	
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 144
+		data1 is equal to 3
+		data2 is equal to 127
+		Variable "SHIFT" is equal to 0
+	then 
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 14 , data2 : 127	#Pitch Bend Up
+		Consume received msg
+end
+rule "A:Pitch Bend Up Release"	
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 144
+		data1 is equal to 3
+		data2 is equal to 0
+		Variable "SHIFT" is equal to 0
+	then 
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 14 , data2 : 0	#Pitch Bend Up
+		Consume received msg
+end
+
+
+####################################  DECK SEARCH WITH BUTTONs ### A DECK #######
+
+#Midi Out: 6 Type: Button Up #Move Beats Fine Bwd
+#Midi Out: 7 Type: Button Up #Move Beats Fine Fwd
+
+rule "A:SEARCH BWD with Button"	
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 144
+		data1 is equal to 0
+		data2 is equal to 127
+		Variable "LOOP_IN_ADJUST_A" is equal to 0
+		Variable "LOOP_OUT_ADJUST_A" is equal to 0
+	then 
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 110 , data2 : 127  	#Deck A Focus
+		Set variable "SEARCH_A" to 1
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 6 , data2 : 127	#Deck SEARCH
+		Consume received msg
+end
+
+rule "A:SEARCH BWD with Button Released"	
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 144
+		data1 is equal to 0
+		data2 is equal to 0
+		Variable "LOOP_IN_ADJUST_A" is equal to 0
+		Variable "LOOP_OUT_ADJUST_A" is equal to 0
+	then 
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 110 , data2 : 127  	#Deck A Focus
+		Set variable "SEARCH_A" to 0
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 6 , data2 : 127	#Deck SEARCH
+		Consume received msg
+end
+
+rule "A:SEARCH FWD with Button"	
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 144
+		data1 is equal to 1
+		data2 is equal to 127
+		Variable "LOOP_IN_ADJUST_A" is equal to 0
+		Variable "LOOP_OUT_ADJUST_A" is equal to 0
+	then 
+		Set variable "SEARCH_A" to 1
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 7 , data2 : 127	#Deck SEARCH 
+		Consume received msg
+end
+
+rule "A:SEARCH FWD with Button Released"	
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 144
+		data1 is equal to 1
+		data2 is equal to 0
+		Variable "LOOP_IN_ADJUST_A" is equal to 0
+		Variable "LOOP_OUT_ADJUST_A" is equal to 0
+	then 
+		Set variable "SEARCH_A" to 0
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 7 , data2 : 127	#Deck SEARCH 
+		Consume received msg
+end
+
+####################################  LOOP IN ADJ/OUT ADJ WITH BUTTONs ### A DECK #######
+
+#Midi Out: 8 Type: Hold #Adjust In BWD
+#Midi Out: 9 Type: Hold #Adjust In FWD
+
+#Midi Out: 10 Type: Hold #Adjust OUT BWD
+#Midi Out: 11 Type: Hold #Adjust OUT FWD
+
+rule "A:Loop IN ADJ BWD"
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 144
+		data1 is equal to 0
+		data2 is equal to 127
+		Variable "LOOP_IN_ADJUST_A" is equal to 1
+		Variable "LOOP_MODE_A" is not equal to 0
+	then 
+		Set variable "LOOP_SIZE_A" to 0
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 8 , data2 : 127	#Loop IN ADJ BWD
+		Send msg in 100ms to midi out 1 with channel : 3 , command : 144 , data1 : 8 , data2 : 0	#Loop IN ADJ BWD
+		Consume received msg
+end
+
+rule "A:Loop IN ADJ FWD"
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 144
+		data1 is equal to 1
+		data2 is equal to 127
+		Variable "LOOP_IN_ADJUST_A" is equal to 1
+		Variable "LOOP_MODE_A" is not equal to 0
+	then 
+		Set variable "LOOP_SIZE_A" to 0
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 9 , data2 : 127	#Loop IN ADJ FWD
+		Send msg in 100ms to midi out 1 with channel : 3 , command : 144 , data1 : 9 , data2 : 0	#Loop IN ADJ FWD
+		Consume received msg
+end
+
+rule "A:Loop OUT ADJ BWD"
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 144
+		data1 is equal to 0
+		data2 is equal to 127
+		Variable "LOOP_OUT_ADJUST_A" is equal to 1
+		Variable "LOOP_MODE_A" is not equal to 0
+	then 
+		Set variable "LOOP_SIZE_A" to 0
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 10 , data2 : 127	 #Loop Out ADJ BWD
+		Send msg in 100ms to midi out 1 with channel : 3 , command : 144 , data1 : 10 , data2 : 0 #Loop Out ADJ BWD
+		Consume received msg
+end
+
+rule "A:Loop OUT ADJ FWD"
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 144
+		data1 is equal to 1
+		data2 is equal to 127
+		Variable "LOOP_OUT_ADJUST_A" is equal to 1
+		Variable "LOOP_MODE_A" is not equal to 0
+	then 
+		Set variable "LOOP_SIZE_A" to 0
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 11 , data2 : 127	 #Loop Out ADJ FWD
+		Send msg in 100ms to midi out 1 with channel : 3 , command : 144 , data1 : 11 , data2 : 0 #Loop Out ADJ FWD
+		Consume received msg
+end
+
+####################################  HOT CUE / SET CUE / JUMP TO CUE / DELETE CUE ### A DECK #######
+/*
+CUE MODE:
+0 - JUMP 
+1 - SET (Rec Mode)
+2 - DELETE Mode
+*/
+
+#Traktor
+#Midi Out: 21 Type: Button Up #Next Cue		#Next Cue Point
+#Midi Out: 23 Type: Button Up #Prev Cue		#Previous Cue Point
+#Midi Out: 25 Type: Button Up #Lock Cue		#
+#Midi Out: 26 Type: Button Up #Delete Cue	#Shift
+
+
+rule "A:Set Cue"	
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 144
+		data1 is equal to 13
+		data2 is equal to 127
+	then 
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 110 , data2 : 127  	#Deck A Focus
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 25 , data2 : 127		#Set Cue
+
+		Send msg in 5ms to midi out 3 with channel : 1 , command : 176 , data1 : 23 , data2 : 127 	#Cue 2 Led On
+		Send msg in 200ms to midi out 3 with channel : 1 , command : 176 , data1 : 23 , data2 : 0	#Cue 2 Led Off
+		Consume received msg
+end
+
+rule "A:Delete Cue"	
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 144
+		data1 is equal to 13
+		data2 is equal to 127
+		Variable "SHIFT" is equal to 1
+	then 
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 26 , data2 : 1	#Delete Cue
+		Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 23 , data2 : 127 	#Cue 1 Led On
+		Send msg in 250ms to midi out 3 with channel : 1 , command : 176 , data1 : 23 , data2 : 0 #Cue 1 Led Off
+		Consume received msg
+end
+
+rule "A:Jump to Prev Cue"	
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 144
+		data1 is equal to 12
+		data2 is equal to 127
+	then 
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 110 , data2 : 127  	#Deck A Focus
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 21 , data2 : 1	#Jump to Cue 1
+		Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 24 , data2 : 127 	#Cue 1 Led On
+		Send msg in 125ms to midi out 3 with channel : 1 , command : 176 , data1 : 24 , data2 : 0 #Cue 1 Led Off
+		Consume received msg
+end
+
+rule "A:Jump to Next Cue"	
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 144
+		data1 is equal to 14
+		data2 is equal to 127
+	then 
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 110 , data2 : 127  	#Deck A Focus
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 22 , data2 : 2	#Jump to Cue 2
+		Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 22 , data2 : 127	#Cue 2 Led On
+		Send msg in 125ms to midi out 3 with channel : 1 , command : 176 , data1 : 22 , data2 : 0 #Cue 2 Led Off
+		Consume received msg
+end
+
+#################################### LOOPS IN OUT ### A DECK ######################################
+/*
+"LOOP_MODE_A"
+	0 no loop           #stand by
+	1 loop in is set    #step 1 of 2
+	2 loop out is set   #step 2 of 2
+	3 sized loop is set #buttons 1 to 5
+*/
+
+#Midi Out: 65 Type: Button Up #Loop Set In/Adjust In
+#Midi Out: 66 Type: Button Up #Loop Set Out/Adjust Out/Exit
+#Midi Out: 74 Type: Button Up #Exit/Reloop
+
+rule "A:Loop Set In"	
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 144
+		data1 is equal to 5
+		data2 is equal to 127
+		Variable "LOOP_MODE_A" is equal to 0
+		Variable "LOOP_IN_ADJUST_A" is equal to 0
+	then 
+		Set variable "LOOP_MODE_A" to 1
+		Set variable "LOOP_IN_ADJUST_A" to 0
+
+		Send msg to midi out 1 with channel : 7 , command : 144 , data1 : 65 , data2 : 127	#Loop Set In 
+		Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 21 , data2 : 127 	#Loop In LED ON
+		Consume received msg
+end
+
+
+rule "A:Loop In Adjust Mode On"	
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 144
+		data1 is equal to 5
+		data2 is equal to 127
+		Variable "LOOP_MODE_A" is greater than 1
+		Variable "LOOP_IN_ADJUST_A" is equal to 0
+	then 
+		Set variable "LOOP_IN_ADJUST_A" to 1
+		Set variable "LOOP_OUT_ADJUST_A" to 0
+
+		Set variable "EX_TIME_LOOP_ADJ_A" to received_message_time
+		Log "30s Timer is On"
+
+		Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 20 , data2 : 127 	#Loop Out LED On
+		Send msg to midi out 2 with channel : 1 , command : 176 , data1 : 1 , data2 : 0	#Blink Adj In Led
+
+		Consume received msg
+
+end
+
+rule "A:Blink Adj In Led On"
+	when
+		Receive msg
+		midi in is equal to 1 #Loopback
+		channel is equal to 1
+		command is equal to 176
+		data1 is equal to 1 #Led In Adj
+		data2 is equal to 127
+		Variable "LOOP_IN_ADJUST_A" is equal to 1
+	then
+		Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 21 , data2 : 127 	#Loop In LED On
+		Send msg "A:Blink Adj In Led Off" in 500ms to midi out 2 with channel : 1 , command : 176 , data1 : 1 , data2 : 0	#Blink Adj In Led
+		Consume received msg
+end
+
+rule "A:Blink Adj In Led Off"
+	when
+		Receive msg
+		midi in is equal to 1 #Loopback
+		channel is equal to 1
+		command is equal to 176
+		data1 is equal to 1 #Led In Adj
+		data2 is equal to 0
+		Variable "LOOP_IN_ADJUST_A" is equal to 1
+	then
+		Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 21 , data2 : 0	#Loop In LED Off
+		Send msg "A:Blink Adj In Led On" in 300ms to midi out 2 with channel : 1 , command : 176 , data1 : 1 , data2 : 127	#Blink Adj In Led
+		Consume received msg
+end
+
+rule "A:Blink Adj In Led Timer"
+	when
+		Receive msg
+		midi in is equal to 1 #Loopback
+		channel is equal to 1
+		command is equal to 176
+		data1 is equal to 1 #Led In Adj
+		Variable "LOOP_IN_ADJUST_A" is equal to 1
+		Variable "EX_TIME_LOOP_ADJ_A" is less than (received_message_time - 30000) #Blink only for 30 sec
+	then
+		Set variable "LOOP_IN_ADJUST_A" to 0
+		Log "30s Timer is off"
+		Consume received msg
+end
+
+
+rule "A:Loop In Adjust Mode Off"	
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 144
+		data1 is equal to 5
+		data2 is equal to 127
+		Variable "LOOP_MODE_A" is greater than 1
+		Variable "LOOP_IN_ADJUST_A" is equal to 1
+	then 
+		Set variable "LOOP_IN_ADJUST_A" to 0
+		Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 21 , data2 : 127 	#Loop In LED ON
+		Consume received msg
+end
+
+
+rule "A:Loop Set Out"	
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 144
+		data1 is equal to 16
+		data2 is equal to 127
+		Variable "LOOP_MODE_A" is equal to 1
+		Variable "LOOP_OUT_ADJUST_A" is equal to 0
+	then 
+		Set variable "LOOP_MODE_A" to 2
+		Set variable "LOOP_OUT_ADJUST_A" to 0
+
+		Send msg to midi out 1 with channel : 7 , command : 144 , data1 : 66 , data2 : 127	#Loop Out/Exit
+		Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 20 , data2 : 127 	#Loop Out LED ON
+		Consume received msg
+end
+
+
+rule "A:Loop Out Adjust Mode On"	
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 144
+		data1 is equal to 16
+		data2 is equal to 127
+		Variable "LOOP_MODE_A" is greater than 1
+		Variable "LOOP_OUT_ADJUST_A" is equal to 0
+	then 
+		Set variable "LOOP_OUT_ADJUST_A" to 1
+		Set variable "LOOP_IN_ADJUST_A" to 0
+
+		Set variable "EX_TIME_LOOP_ADJ_A" to received_message_time
+		Log "30s Timer is On"
+
+		Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 21 , data2 : 127 	#Loop In LED On
+		Send msg to midi out 2 with channel : 1 , command : 176 , data1 : 2 , data2 : 0	#Blink Adj Out Led
+
+		Consume received msg
+end
+
+rule "A:Blink Adj Out Led On"
+	when
+		Receive msg
+		midi in is equal to 1 #Loopback
+		channel is equal to 1
+		command is equal to 176
+		data1 is equal to 2 #Led Out Adj
+		data2 is equal to 127
+		Variable "LOOP_OUT_ADJUST_A" is equal to 1
+	then
+		Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 20 , data2 : 127 	#Loop Out LED On
+		Send msg "A:Blink Adj Out Led Off" in 500ms to midi out 2 with channel : 1 , command : 176 , data1 : 2 , data2 : 0	#Blink Adj Out Led
+		Consume received msg
+end
+
+rule "A:Blink Adj Out Led Off"
+	when
+		Receive msg
+		midi in is equal to 1 #Loopback
+		channel is equal to 1
+		command is equal to 176
+		data1 is equal to 2 #Led Out Adj
+		data2 is equal to 0
+		Variable "LOOP_OUT_ADJUST_A" is equal to 1
+	then
+		Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 20 , data2 : 0	#Loop Out LED Off
+		Send msg "A:Blink Adj Out Led On" in 300ms to midi out 2 with channel : 1 , command : 176 , data1 : 2 , data2 : 127	#Blink Adj Out Led
+		Consume received msg
+end
+
+rule "A:Blink Adj Out Led Timer"
+	when
+		Receive msg
+		midi in is equal to 1 #Loopback
+		channel is equal to 1
+		command is equal to 176
+		data1 is equal to 2 #Led Out Adj
+		Variable "LOOP_OUT_ADJUST_A" is equal to 1
+		Variable "EX_TIME_LOOP_ADJ_A" is less than (received_message_time - 30000) #Blink only for 30 sec
+	then
+		Set variable "LOOP_OUT_ADJUST_A" to 0
+		Log "30s Timer is off"
+		Consume received msg
+end
+
+rule "A:Loop Out Adjust Mode Off"	
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 144
+		data1 is equal to 16
+		data2 is equal to 127
+		#Variable "LOOP_MODE_A" is not equal to 0
+		Variable "LOOP_MODE_A" is greater than 1
+		Variable "LOOP_OUT_ADJUST_A" is equal to 1
+	then 
+		Set variable "LOOP_OUT_ADJUST_A" to 0
+		Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 20 , data2 : 127 	#Loop Out LED ON
+		Consume received msg
+end
+
+
+rule "A:Loop Exit"	
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 144
+		data1 is equal to 15
+		data2 is equal to 127
+		Variable "LOOP_MODE_A" is equal to 2
+		#Variable "LOOP_OUT_MODE_A" is equal to 3
+	then 
+		Set variable "LOOP_MODE_A" to 0
+		Set variable "LOOP_IN_ADJUST_A" to 0
+		Set variable "LOOP_OUT_ADJUST_A" to 0
+
+		Send msg to midi out 1 with channel : 7 , command : 144 , data1 : 66, data2 : 127	#Loop Set Out/Adjust Out/Exit
+
+		Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 21 , data2 : 0 	#Loop In LED Off
+		Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 20 , data2 : 0 	#Loop Out LED Off
+		Consume received msg
+end
+
+rule "A:Loop Reloop"	
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 144
+		data1 is equal to 15
+		data2 is equal to 127
+		Variable "LOOP_MODE_A" is equal to 0
+	then 
+		Set variable "LOOP_MODE_A" to 2
+		#Set variable "LOOP_SIZE_A" to 0
+
+		Set variable "LOOP_IN_ADJUST_A" to 0
+		Set variable "LOOP_OUT_ADJUST_A" to 0
+
+		Send msg to midi out 1 with channel : 7 , command : 144 , data1 : 74 , data2 : 127	#Reloop
+		Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 21 , data2 : 127 	#Loop In LED On
+		Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 20 , data2 : 127 	#Loop Out LED On
+		Consume received msg
+end
+
+
+
+
+
+
+####################################################################################
+#################################### B RULES    ####################################
+####################################################################################
+
+############################ DECK LEVEL ############## B DECK #####################################
+
+#Midi Out: 76 Type:Slider
+
+rule "B:Deck Level"
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 176	
+		data1 is equal to 2	
+	then
+		Send msg to midi out 1 with channel : 5 , command : 176 , data1 : 76 , data2 : received_message_data2 
+		Consume received msg
+end
+
+############################ Pitch Control ############## B DECK ##################################
+
+#Midi Out: 42 Type:Slider #TEMPO
+
+rule "B:Pitch"
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 176	
+		data1 is equal to 12
+		Variable "SHIFT" is equal to 0
+	then
+		Send msg to midi out 1 with channel : 3 , command : 176 , data1 : 42 , data2 : received_message_data2 
+		Consume received msg
+end
+
+############################ Pitch Reset ############## B DECK ##################################
+
+#Midi Out: 43 Type:Slider #TEMPO Reset
+
+rule "B:Tempo Reset"
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 176	
+		data1 is equal to 12
+		Variable "SHIFT" is equal to 1
+	then
+		Send msg to midi out 1 with channel : 3 , command : 176 , data1 : 43 , data2 : 127
+		Consume received msg
+end
+
+
+############################ EQ ############## B DECK #####################################
+
+#Midi Out: 38 Type: Fader #EQ Hi
+#Midi Out: 39 Type: Fader #EQ Mid
+#Midi Out: 40 Type: Fader #EQ Low
+
+rule "B:EQ Hi"
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 176	
+		data1 is equal to 7
+	then
+		Send msg to midi out 1 with channel : 3 , command : 176 , data1 : 38 , data2 : received_message_data2 
+		Consume received msg
+end
+
+rule "B:EQ Mid"
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 176	
+		data1 is equal to 8
+	then
+		Send msg to midi out 1 with channel : 3 , command : 176 , data1 : 39 , data2 : received_message_data2 
+		Consume received msg
+end
+
+rule "B:EQ Low"
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 176	
+		data1 is equal to 9
+	then
+		Send msg to midi out 1 with channel : 3 , command : 176 , data1 : 40 , data2 : received_message_data2 
+		Consume received msg
+end
+
+############################ BALANCE ############## B DECK #####################################
+
+#Midi Out: 41 Type:Fader #Balance
+
+rule "B:Balance"
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 176	
+		data1 is equal to 10
+	then
+		Send msg to midi out 1 with channel : 3 , command : 176 , data1 : 41 , data2 : received_message_data2 
+		Consume received msg
+end
+
+#################################### SYNC DECK ### B DECK ######################################
+
+#Midi Out: 44 Type:Hold   #Deck Tempo Sync B (Hold)
+#Midi Out: 45 Type:Toggle #Deck Phase Sync B (Hold)
+#Midi Out: 46 Type:Toggle #Deck Tempo Sync B (Toggle)
+
+#Midi Out: 19 Type:Toggle #Deck Tempo Sync B (Toggle)
+
+rule "B:Sync Hold"
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 144	
+		data1 is equal to 10
+		data2 is equal to 127
+		Variable "SHIFT" is equal to 0
+		Variable "SYNC_MODE_B" is equal to 0
+	then
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 111 , data2 : 127  	#Deck B Focus
+
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 44 , data2 : 127    #Deck Tempo Sync B (Hold)
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 45 , data2 : 127    #Deck Phase Sync B (Hold)
+
+		Set variable "SYNC_MODE_B" to 0
+		#Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 22 , data2 : 127 	#Sync Led On
+		Consume received msg
+end
+
+
+rule "B:Sync Release"
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 144
+		data1 is equal to 10
+		data2 is equal to 0
+		Variable "SHIFT" is equal to 0
+		Variable "SYNC_MODE_B" is equal to 0
+	then
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 45 , data2 : 0    #Deck Phase Sync B (Hold)
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 44 , data2 : 0    #Deck Tempo Sync B (Hold)
+
+		Set variable "SYNC_MODE_B" to 0
+		#Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 22 , data2 : 0 	#Sync Led On
+		Consume received msg
+end
+
+
+rule "B:Sync Lock On. B wasn't Syncd with B"
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 144
+		data1 is equal to 10
+		data2 is equal to 127
+		Variable "SHIFT" is equal to 1
+		Variable "SYNC_MODE_B" is equal to 0
+	then
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 46 , data2 : 127    #Deck Tempo Sync B (Toggle)
+		Set variable "SYNC_MODE_B" to 1
+		#Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 22 , data2 : 127 	#Sync Led On
+		Consume received msg
+end
+
+
+rule "B:Sync Lock On. B and A were syncd"
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 144
+		data1 is equal to 10
+		data2 is equal to 127
+		Variable "SHIFT" is equal to 1
+		Variable "SYNC_MODE_B" is equal to 0
+		Variable "SYNC_MODE_B" is equal to 1
+	then
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 45 , data2 : 127    #Deck Tempo Sync B (Toggle)
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 19 , data2 : 127    #Deck Tempo Sync B (Toggle)
+		Set variable "SYNC_MODE_B" to 1
+		Set variable "SYNC_MODE_B" to 0
+		#Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 22 , data2 : 127 	#Sync Led On A
+		#Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 26 , data2 : 0 	#Sync Led Off B
+		Consume received msg
+end
+
+
+rule "B:Sync Lock Off A"
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 144
+		data1 is equal to 10
+		data2 is equal to 127
+		#Variable "SHIFT" is equal to 1
+		Variable "SYNC_MODE_B" is equal to 1
+	then
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 46 , data2 : 127    #Deck Tempo Sync B (Toggle)
+		Set variable "SYNC_MODE_B" to 0
+		#Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 22 , data2 : 0 	#Sync Led Off A
+		Consume received msg
+end
+
+
+####################################  SCRATCH MODE / PLATTER HOLD ### B DECK #######
+
+#Midi Out: 39 Type:Toggle #Scratch Toggle
+#Midi Out: 47 Type:Hold	  #Deck Scratch Hold	
+
+rule "B:Scratch Mode"	
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 144
+		data1 is equal to 25
+		data2 is equal to 127
+		Variable "SCRATCH_MODE_B" is equal to 0
+	then 
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 111 , data2 : 127  	#Deck B Focus
+	    	Set variable "HOLD_B" to 0
+		Set variable "SCRATCH_MODE_B" to 1
+		#Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 39 , data2 : 127	#Deck Scratch ON (Toggle)
+		#Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 39 , data2 : 127	#Deck Scratch Off (Toggle)
+		Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 11 , data2 : 127 	#Scratch LED B On
+		Consume received msg
+end
+
+rule "B:Exit Scratch Mode"	
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 144
+		data1 is equal to 25
+		data2 is equal to 127
+		Variable "SCRATCH_MODE_B" is equal to 1
+	then 
+	    	Set variable "HOLD_B" to 0
+		Set variable "SCRATCH_MODE_B" to 0
+		#Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 39 , data2 : 127	#Deck Scratch Off (Toggle)
+		Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 11 , data2 : 0	#Scratch LED B Off
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 47 , data2 : 0	#Deck Hold Off
+		Consume received msg
+end
+
+/*
+rule "B:Platter Hold"	
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 176
+		data1 is equal to 25
+		data2 is equal to 127
+	then 
+	    	Set variable "HOLD_B" to 1
+		#Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 39 , data2 : 127	#Deck Scratch ON (Toggle)
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 47 , data2 : 127	#Deck Hold On
+		Consume received msg
+end
+
+rule "B:Platter Release"	
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 176
+		data1 is equal to 25
+		data2 is equal to 0
+	then 
+	    	Set variable "HOLD_B" to 0
+		#Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 39 , data2 : 0	#Deck Scratch Off (Toggle)
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 47 , data2 : 0	#Deck Hold Off
+		Consume received msg
+end
+*/
+
+############################ PLAY / CUE ############## B DECK #####################################
+
+#Midi Out: 28 Type:Toggle #Deck Cue/play instant A
+#Midi Out: 29 Type:Toggle #Deck Cue/plause instant A
+#Midi Out: 30 Type:Toggle #Deck play/pause A
+#Midi Out: 47 Type:Toggle #Deck Hold
+
+/*
+PLAYMODE
+	STOP	0
+	CUE	1
+	PLAY	2
+	PLAYCUE	3
+	PLAHOLD	4
+
+*/
+
+rule "B:Cue"
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 144
+		data1 is equal to 27
+		data2 is equal to 127
+		Variable "PLAY_MODE_B" is equal to 0
+	then
+	    	Set variable "PLAY_MODE_B" to 1
+		Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 9 , data2 : 127	#Cue B LED ON
+		Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 10 , data2 : 127	#play/pause B LED On
+		#Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 0 , data2 : 127	#play/pause B LED Blinking On
+
+	    	Set variable "HOLD_B" to 0
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 47 , data2 : 0	#Deck Hold Off
+
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 111 , data2 : 127  	#Deck B Focus
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 28  , data2 : 127  	#Deck Cue/play instant B On
+		Consume received msg
+end
+
+rule "B:Exit Cue Loopback"
+	when
+		Receive msg
+		midi in is equal to 1 #Loopback
+		channel is equal to 1
+		command is equal to 176
+		data1 is equal to 17
+		data2 is equal to 127
+	then
+	    	Set variable "PLAY_MODE_B" to 0
+		Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 9 , data2 : 0		#Cue B LED Off
+		Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 10 , data2 : 0		#play/pause B LED Off
+		#Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 0 , data2 : 127	#play/pause B LED Blinking On
+
+	    	Set variable "HOLD_B" to 1
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 47 , data2 : 127	#Deck Hold On
+
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 29 , data2 : 127  	#Deck cue/pause instant B On
+		Consume received msg
+end
+
+
+
+rule "B:Exit Cue"
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 144
+		data1 is equal to 27
+		data2 is equal to 0
+		Variable "PLAY_MODE_B" is equal to 1
+	then
+		Send msg to midi out 2 with channel : 1 , command : 176 , data1 : 17 , data2 : 127	#Cue Loopback
+		Consume received msg
+end
+
+rule "B:Play Loopback"
+	when
+		Receive msg
+		midi in is equal to 1 #Loopback
+		channel is equal to 1
+		command is equal to 176
+		data1 is equal to 16
+		data2 is equal to 127
+	then
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 111 , data2 : 127  	#Deck B Focus
+
+	    	Set variable "PLAY_MODE_B" to 2
+		Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 10 , data2 : 127	#play/pause B LED ON
+		#Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 0 , data2 : 0		#play/pause B LED Blinking Off
+
+	    	Set variable "HOLD_B" to 0
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 47 , data2 : 0	#Deck Hold Off
+
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 30 , data2 : 127  	#Deck play/pause B On
+		Consume received msg
+end
+
+
+rule "B:Play"
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 144
+		data1 is equal to 26
+		data2 is equal to 127
+		Variable "PLAY_MODE_B" is equal to 0
+	then
+		Send msg to midi out 2 with channel : 1 , command : 176 , data1 : 16 , data2 : 127	#Play Loopback
+		Consume received msg
+end
+
+
+rule "B:Exit Play"
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 144
+		data1 is equal to 26
+		data2 is equal to 127
+		Variable "PLAY_MODE_B" is equal to 2
+	then
+	    	Set variable "PLAY_MODE_B" to 0
+		Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 10 , data2 : 0		#Play/Pause B LED OFF
+		#Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 0 , data2 : 127	#play/pause B LED Blinking
+
+	    	Set variable "HOLD_B" to 1
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 47 , data2 : 127	#Deck Hold On
+
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 30 , data2 : 127  	#Deck play/pause B On
+		Consume received msg
+end
+
+
+rule "B:Exit Play Pressing Cue Loopback"
+	when
+		Receive msg
+		midi in is equal to 1 #Loopback
+		channel is equal to 1
+		command is equal to 176
+		data1 is equal to 15
+		data2 is equal to 127
+	then
+	    	Set variable "PLAY_MODE_B" to 1
+		Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 9 , data2 : 127	#Deck Cue/Play B LED On
+		Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 10 , data2 : 0		#Play/Pause B LED OFF
+		#Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 0 , data2 : 127	#play/pause B LED Blinking On
+
+	    	Set variable "HOLD_B" to 1
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 47 , data2 : 127	#Deck Hold On
+
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 29 , data2 : 127  	#Deck Cue/play instant B On
+		Consume received msg
+end
+
+
+rule "B:Exit Play Pressing CUE"
+	when
+
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 144
+		data1 is equal to 27
+		data2 is equal to 127
+		Variable "PLAY_MODE_B" is equal to 2
+	then
+		Send msg to midi out 2 with channel : 1 , command : 176 , data1 : 15 , data2 : 127	#Cue Loopback
+		Consume received msg
+end
+
+
+rule "B:PlayCUE"
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 144
+		data1 is equal to 26
+		data2 is equal to 127
+		Variable "PLAY_MODE_B" is equal to 1
+	then
+	    	Set variable "PLAY_MODE_B" to 3
+		Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 10 , data2 : 127	#play/pause B LED ON
+		#Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 0 , data2 : 0		#play/pause B LED Blinking Off
+
+	    	Set variable "HOLD_B" to 0
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 47 , data2 : 0	#Deck Hold Off
+		Consume received msg
+end
+
+
+rule "B:Exit PLAYCUE Pressing PLAY"
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 144
+		data1 is equal to 26
+		data2 is equal to 127
+		Variable "PLAY_MODE_B" is equal to 3
+	then
+	    	Set variable "PLAY_MODE_B" to 0
+		Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 10 , data2 : 0		#play/pause B LED Off
+		#Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 0 , data2 : 127	#play/pause B LED Blinking On
+		Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 9 , data2 : 0		#cue/play B LED Off
+
+	    	Set variable "HOLD_B" to 1
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 47 , data2 : 127	#Deck Hold On
+
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 30 , data2 : 127  	#Deck play/pause B On
+		Consume received msg
+end
+
+
+rule "B:Exit PLAYCUE Pressing CUE"
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 144
+		data1 is equal to 27
+		data2 is equal to 127
+		Variable "PLAY_MODE_B" is equal to 3
+	then
+		#Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 19 , data2 : 0			#play/pause B LED Blinking Off
+		Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 9 , data2 : 0			#cue/play B LED Off
+		Send msg in 125ms to midi out 3 with channel : 1 , command : 176 , data1 : 9 , data2 : 127	#cue/play B LED On
+		Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 10 , data2 : 0			#play/pause B LED Off
+		Send msg in 125ms to midi out 3 with channel : 1 , command : 176 , data1 : 10 , data2 : 127	#play/pause B LED On
+
+	    	Set variable "HOLD_B" to 0
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 47 , data2 : 0	#Deck Hold Off
+
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 28 , data2 : 127  	#Deck Cue/play instant B On
+		Consume received msg
+end
+
+
+#################################### PLAY REVERSE MODE ### B DECK ##################
+
+#Midi Out: 31 Type:Toggle
+
+rule "B:Play Reverse"
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 144
+		data1 is equal to 26
+		data2 is equal to 127
+		Variable "SHIFT" is equal to 1
+	then
+	    	Set variable "PLAY_MODE_B" to 2
+		Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 10 , data2 : 127	#play/pause B LED ON
+
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 31 , data2 : 127  	#Deck Play Reverse On
+		Consume received msg
+end
+
+
+
+
+####################################  DECK Scratch WITH JOG ### B DECK #######
+
+#Midi Out: 29  Type: Rotary Encoder 3F/41, Sensibility 1%, Accelaration 2% #Deck Scratch
+#Midi Out: 47 Type: Toggle #Deck Scratch on
+
+#Music stopped
+rule "B:Deck Scratch BWD Factor 1"
+	when
+		Receive msg
+		midi in is equal to 1 #Loopback
+		channel is equal to 1
+		command is equal to 176
+		data1 is equal to 14
+		data2 is equal to 127
+		Variable "GLOBAL_SENSIBILITY" is equal to 1
+	then
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 47 , data2 : 127		#Deck Hold On
+		Send msg to midi out 1 with channel : 2 , command : 176 , data1 : 29  , data2 : 63		#Deck Scratch
+		Send msg in 200ms to midi out 1 with channel : 3 , command : 144 , data1 : 47 , data2 : 0	#Deck Hold Off
+		Consume received msg
+
+end
+
+rule "B:Deck Scratch BWD Factor 2"
+	when
+		Receive msg
+		midi in is equal to 1 #Loopback
+		channel is equal to 1
+		command is equal to 176
+		data1 is equal to 14
+		data2 is equal to 127
+		Variable "GLOBAL_SENSIBILITY" is equal to 2
+	then
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 47 , data2 : 127		#Deck Hold On
+		Send msg to midi out 1 with channel : 2 , command : 176 , data1 : 29  , data2 : 63		#Deck Scratch
+		Send msg in 300ms to midi out 1 with channel : 3 , command : 144 , data1 : 47 , data2 : 0	#Deck Hold Off
+		Consume received msg
+
+end
+
+rule "B:Deck Scratch BWD Factor 3"
+	when
+		Receive msg
+		midi in is equal to 1 #Loopback
+		channel is equal to 1
+		command is equal to 176
+		data1 is equal to 14
+		data2 is equal to 127
+		Variable "GLOBAL_SENSIBILITY" is equal to 3
+	then
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 47 , data2 : 127		#Deck Hold On
+		Send msg to midi out 1 with channel : 2 , command : 176 , data1 : 29  , data2 : 63		#Deck Scratch
+		Send msg in 400ms to midi out 1 with channel : 3 , command : 144 , data1 : 47 , data2 : 0	#Deck Hold Off
+		Consume received msg
+
+end
+
+rule "B:Scratch BWD with Jog. Scratch Mode On"	
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 176
+		data1 is equal to 18
+		data2 is equal to 63
+		Variable "SEARCH_B" is equal to 0
+		Variable "HOLD_B" is equal to 0
+		Variable "SCRATCH_MODE_B" is equal to 1
+		Variable "LOOP_IN_ADJUST_B" is equal to 0
+		Variable "LOOP_OUT_ADJUST_B" is equal to 0
+	then 
+		Send msg to midi out 2 with channel : 1 , command : 176 , data1 : 14 , data2 : 127	#Deck Scratch Loopback
+		Consume received msg
+end
+
+
+rule "B:Deck Scratch FWD Factor 1"
+	when
+		Receive msg
+		midi in is equal to 1 #Loopback
+		channel is equal to 1
+		command is equal to 176
+		data1 is equal to 14
+		data2 is equal to 1
+		Variable "GLOBAL_SENSIBILITY" is equal to 1
+	then
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 47 , data2 : 127		#Deck Hold On
+		Send msg to midi out 1 with channel : 2 , command : 176 , data1 : 29  , data2 : 65		#Deck Scratch
+		Send msg in 200ms to midi out 1 with channel : 3 , command : 144 , data1 : 47 , data2 : 0	#Deck Hold Off
+		Consume received msg
+
+end
+
+rule "B:Deck Scratch FWD Factor 2"
+	when
+		Receive msg
+		midi in is equal to 1 #Loopback
+		channel is equal to 1
+		command is equal to 176
+		data1 is equal to 14
+		data2 is equal to 1
+		Variable "GLOBAL_SENSIBILITY" is equal to 2
+	then
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 47 , data2 : 127		#Deck Hold On
+		Send msg to midi out 1 with channel : 2 , command : 176 , data1 : 29  , data2 : 65		#Deck Scratch
+		Send msg in 300ms to midi out 1 with channel : 3 , command : 144 , data1 : 47 , data2 : 0	#Deck Hold Off
+		Consume received msg
+
+end
+
+rule "B:Deck Scratch FWD Factor 3"
+	when
+		Receive msg
+		midi in is equal to 1 #Loopback
+		channel is equal to 1
+		command is equal to 176
+		data1 is equal to 14
+		data2 is equal to 1
+		Variable "GLOBAL_SENSIBILITY" is equal to 3
+	then
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 47 , data2 : 127		#Deck Hold On
+		Send msg to midi out 1 with channel : 2 , command : 176 , data1 : 29  , data2 : 65		#Deck Scratch
+		Send msg in 400ms to midi out 1 with channel : 3 , command : 144 , data1 : 47 , data2 : 0	#Deck Hold Off
+		Consume received msg
+
+end
+
+rule "B:Scratch FWD with Jog. Scratch Mode On"	
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 176
+		data1 is equal to 18
+		data2 is equal to 65
+		Variable "SEARCH_B" is equal to 0
+		Variable "HOLD_B" is equal to 0
+		Variable "SCRATCH_MODE_B" is equal to 1
+		Variable "LOOP_IN_ADJUST_B" is equal to 0
+		Variable "LOOP_OUT_ADJUST_B" is equal to 0
+	then 
+		Send msg to midi out 2 with channel : 1 , command : 176 , data1 : 14 , data2 : 1		#Deck Scratch Loopback
+		Consume received msg
+end
+
+#Music playing
+rule "B:Scratch BWD with Jog. Platter Held"	
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 176
+		data1 is equal to 18
+		data2 is equal to 63
+		Variable "SEARCH_B" is equal to 0
+		Variable "HOLD_B" is equal to 1
+		Variable "LOOP_IN_ADJUST_B" is equal to 0
+		Variable "LOOP_OUT_ADJUST_B" is equal to 0
+	then 
+		Send msg to midi out 1 with channel : 2 , command : 176 , data1 : 29  , data2 : 63	#Deck Scratch
+		Consume received msg
+end
+
+rule "B:Scratch FWD with Jog. Platter Held"	
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 176
+		data1 is equal to 18
+		data2 is equal to 65
+		Variable "SEARCH_B" is equal to 0
+		Variable "HOLD_B" is equal to 1
+		Variable "LOOP_IN_ADJUST_B" is equal to 0
+		Variable "LOOP_OUT_ADJUST_B" is equal to 0
+	then 
+		Send msg to midi out 1 with channel : 2 , command : 176 , data1 : 29  , data2 : 65	#Deck Scratch
+		Consume received msg
+end
+
+
+####################################  DECK PITCH BEND WITH JOG ### B DECK #######
+
+#Midi Out: 30 Type: Button Down #Deck Pitch Bend Down
+#Midi Out: 31 Type: Button Up #Deck Pitch Bend Up 
+
+rule "B:Pitch Bend Down Factor 1"
+	when
+		Receive msg
+		midi in is equal to 1 #Loopback
+		channel is equal to 1
+		command is equal to 176
+		data1 is equal to 13
+		data2 is equal to 127
+		Variable "GLOBAL_SENSIBILITY" is equal to 1
+	then
+		Send msg to midi out 1 with channel : 2 , command : 176 , data1 : 30 , data2 : 127	#Deck Pitch Bend Down
+		Send msg in 200ms to midi out 1 with channel : 2 , command : 176 , data1 : 30 , data2 : 0 #Deck Pitch Bend Down
+		Consume received msg
+
+end
+
+rule "B:Pitch Bend Down Factor 2"
+	when
+		Receive msg
+		midi in is equal to 1 #Loopback
+		channel is equal to 1
+		command is equal to 176
+		data1 is equal to 13
+		data2 is equal to 127
+		Variable "GLOBAL_SENSIBILITY" is equal to 2
+	then
+		Send msg to midi out 1 with channel : 2 , command : 176 , data1 : 30 , data2 : 127	#Deck Pitch Bend Down
+		Send msg in 300ms to midi out 1 with channel : 2 , command : 176 , data1 : 30 , data2 : 0 #Deck Pitch Bend Down
+		Consume received msg
+
+end
+
+rule "B:Pitch Bend Down Factor 3"
+	when
+		Receive msg
+		midi in is equal to 1 #Loopback
+		channel is equal to 1
+		command is equal to 176
+		data1 is equal to 13
+		data2 is equal to 127
+		Variable "GLOBAL_SENSIBILITY" is equal to 3
+	then
+		Send msg to midi out 1 with channel : 2 , command : 176 , data1 : 30 , data2 : 127	#Deck Pitch Bend Down
+		Send msg in 400ms to midi out 1 with channel : 2 , command : 176 , data1 : 30 , data2 : 0 #Deck Pitch Bend Down
+		Consume received msg
+
+end
+
+rule "B:Pitch Bend Down with Jog"	
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 176
+		data1 is equal to 18
+		data2 is equal to 63
+
+		Variable "PLAY_MODE_B" is not equal to 0
+		Variable "HOLD_B" is equal to 0
+		Variable "SEARCH_B" is equal to 0
+		Variable "SCRATCH_MODE_B" is equal to 0
+		Variable "LOOP_IN_ADJUST_B" is equal to 0
+		Variable "LOOP_OUT_ADJUST_B" is equal to 0
+	then 
+		Send msg to midi out 2 with channel : 1 , command : 176 , data1 : 13 , data2 : 127	#Loopback Pitch Bend Down
+		Consume received msg
+end
+
+rule "B:Pitch Bend Up Factor 1"
+	when
+		Receive msg
+		midi in is equal to 1 #Loopback
+		channel is equal to 1
+		command is equal to 176
+		data1 is equal to 13
+		data2 is equal to 1
+		Variable "GLOBAL_SENSIBILITY" is equal to 1
+	then
+		Send msg to midi out 1 with channel : 2 , command : 176 , data1 : 31 , data2 : 127	#Deck Pitch Bend 
+		Send msg in 200ms to midi out 1 with channel : 2 , command : 176 , data1 : 31 , data2 : 0 #Deck Pitch Bend 
+		Consume received msg
+
+end
+
+rule "B:Pitch Bend Up Factor 2"
+	when
+		Receive msg
+		midi in is equal to 1 #Loopback
+		channel is equal to 1
+		command is equal to 176
+		data1 is equal to 13
+		data2 is equal to 1
+		Variable "GLOBAL_SENSIBILITY" is equal to 2
+	then
+		Send msg to midi out 1 with channel : 2 , command : 176 , data1 : 31 , data2 : 127	#Deck Pitch Bend Up
+		Send msg in 300ms to midi out 1 with channel : 2 , command : 176 , data1 : 31 , data2 : 0 #Deck Pitch Bend Up
+		Consume received msg
+
+end
+
+rule "B:Pitch Bend Up Factor 3"
+	when
+		Receive msg
+		midi in is equal to 1 #Loopback
+		channel is equal to 1
+		command is equal to 176
+		data1 is equal to 13
+		data2 is equal to 1
+		Variable "GLOBAL_SENSIBILITY" is equal to 3
+	then
+		Send msg to midi out 1 with channel : 2 , command : 176 , data1 : 31 , data2 : 127	#Deck Pitch Bend Up
+		Send msg in 400ms to midi out 1 with channel : 2 , command : 176 , data1 : 31 , data2 : 0 #Deck Pitch Bend Up
+		Consume received msg
+
+end
+
+rule "B:Pitch Bend Up with Jog"	
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 176
+		data1 is equal to 18
+		data2 is equal to 65
+
+		Variable "PLAY_MODE_B" is not equal to 0
+		Variable "HOLD_B" is equal to 0
+		Variable "SEARCH_B" is equal to 0
+		Variable "SCRATCH_MODE_B" is equal to 0
+		Variable "LOOP_IN_ADJUST_B" is equal to 0
+		Variable "LOOP_OUT_ADJUST_B" is equal to 0
+	then 
+		Send msg to midi out 2 with channel : 1 , command : 176 , data1 : 13 , data2 : 1	#Loopback Pitch Bend Up
+		Consume received msg
+end
+
+####################################  DECK SEARCH WITH JOG ### B DECK #######
+
+#Midi Out: 32 Type: Encoder Sensibility 10% #Deck Search Bwd
+#Midi Out: 33 Type: Encoder Sensibility 10% #Deck Search Fwd
+
+rule "B:SEARCH BWD with Jog"	
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 176
+		data1 is equal to 18
+		data2 is equal to 63
+		Variable "SEARCH_B" is equal to 1
+		Variable "LOOP_IN_ADJUST_B" is equal to 0
+		Variable "LOOP_OUT_ADJUST_B" is equal to 0
+	then 
+		Send msg to midi out 1 with channel : 2 , command : 176 , data1 : 32 , data2 : 127		#Deck SEARCH Bwd
+		Send msg in 20ms to midi out 1 with channel : 2 , command : 176 , data1 : 32 , data2 : 0	#Deck SEARCH
+		Consume received msg
+end
+
+rule "B:SEARCH FWD with Jog"	
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 176
+		data1 is equal to 18
+		data2 is equal to 65
+		Variable "SEARCH_B" is equal to 1
+		Variable "LOOP_IN_ADJUST_B" is equal to 0
+		Variable "LOOP_OUT_ADJUST_B" is equal to 0
+	then 
+		Send msg to midi out 1 with channel : 2 , command : 176 , data1 : 33 , data2 : 127		#Deck SEARCH Fwd
+		Send msg in 20ms to midi out 1 with channel : 2 , command : 176 , data1 : 33 , data2 : 0	#Deck SEARCH
+		Consume received msg
+end
+
+########################### LOOP IN ADJUST / OUT ADJUST WITH JOG ## B DECK ############################
+#Midi Out: 34 Type: Hold #Adjust In BWD
+#Midi Out: 35 Type: Hold #Adjust In FWD
+
+#Midi Out: 36 Type: Hold #Adjust Out BWD
+#Midi Out: 37 Type: Hold #Adjust Out FWD
+
+rule "B:Loop In FINE Adjust BWD"	
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 176
+		data1 is equal to 18
+		data2 is equal to 63
+		Variable "LOOP_IN_ADJUST_B" is equal to 1
+		Variable "LOOP_MODE_B" is not equal to 0
+	then 
+		Set variable "LOOP_SIZE_B" to 0
+		Send msg to midi out 1 with channel : 2 , command : 176 , data1 : 34 , data2 : 127	#Adjust In BWD
+		Send msg in 10ms to midi out 1 with channel : 2 , command : 176 , data1 : 34 , data2 : 0	#Adjust In BWD
+		Send msg in 11ms to midi out 1 with channel : 2 , command : 176 , data1 : 34 , data2 : 127	#Adjust In BWD
+		Send msg in 20ms to midi out 1 with channel : 2 , command : 176 , data1 : 34 , data2 : 0	#Adjust In BWD
+		Send msg in 21ms to midi out 1 with channel : 2 , command : 176 , data1 : 34 , data2 : 127	#Adjust In BWD
+		Send msg in 30ms to midi out 1 with channel : 2 , command : 176 , data1 : 34 , data2 : 0	#Adjust In BWD
+		Consume received msg 
+end
+
+rule "B:Loop In FINE Adjust FWD"	
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 176
+		data1 is equal to 18
+		data2 is equal to 65
+		Variable "LOOP_IN_ADJUST_B" is equal to 1
+		Variable "LOOP_MODE_B" is not equal to 0
+	then 
+		Set variable "LOOP_SIZE_B" to 0
+		Send msg to midi out 1 with channel : 2 , command : 176 , data1 : 35 , data2 : 127	#Adjust In FWD
+		Send msg in 10ms to midi out 1 with channel : 2 , command : 176 , data1 : 35 , data2 : 0	#Adjust In FWD
+		Send msg in 11ms to midi out 1 with channel : 2 , command : 176 , data1 : 35 , data2 : 127	#Adjust In FWD
+		Send msg in 20ms to midi out 1 with channel : 2 , command : 176 , data1 : 35 , data2 : 0	#Adjust In FWD
+		Send msg in 21ms to midi out 1 with channel : 2 , command : 176 , data1 : 35 , data2 : 127	#Adjust In FWD
+		Send msg in 30ms to midi out 1 with channel : 2 , command : 176 , data1 : 35 , data2 : 0	#Adjust In FWD
+		Consume received msg
+end
+
+rule "B:Loop Out FINE Adjust BWD"	
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 176
+		data1 is equal to 18
+		data2 is equal to 63
+		Variable "LOOP_OUT_ADJUST_B" is equal to 1
+		Variable "LOOP_MODE_B" is not equal to 0
+	then 
+		Set variable "LOOP_SIZE_B" to 0
+		Send msg to midi out 1 with channel : 2 , command : 176 , data1 : 36 , data2 : 127	#Adjust Out BWD
+		Send msg in 10ms to midi out 1 with channel : 2 , command : 176 , data1 : 36 , data2 : 0	#Adjust Out BWD
+		Send msg in 11ms to midi out 1 with channel : 2 , command : 176 , data1 : 36 , data2 : 127	#Adjust Out BWD
+		Send msg in 20ms to midi out 1 with channel : 2 , command : 176 , data1 : 36 , data2 : 0	#Adjust Out BWD
+		Send msg in 21ms to midi out 1 with channel : 2 , command : 176 , data1 : 36 , data2 : 127	#Adjust Out BWD
+		Send msg in 30ms to midi out 1 with channel : 2 , command : 176 , data1 : 36 , data2 : 0	#Adjust Out BWD
+	Consume received msg
+end
+
+rule "B:Loop Out FINE Adjust FWD"	
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 176
+		data1 is equal to 18
+		data2 is equal to 65
+		Variable "LOOP_OUT_ADJUST_B" is equal to 1
+		Variable "LOOP_MODE_B" is not equal to 0
+	then 
+		Set variable "LOOP_SIZE_B" to 0
+		Send msg to midi out 1 with channel : 2 , command : 176 , data1 : 37 , data2 : 127	#Adjust Out FWD
+		Send msg in 10ms to midi out 1 with channel : 2 , command : 176 , data1 : 37 , data2 : 0	#Adjust Out FWD
+		Send msg in 11ms to midi out 1 with channel : 2 , command : 176 , data1 : 37 , data2 : 127	#Adjust Out FWD
+		Send msg in 20ms to midi out 1 with channel : 2 , command : 176 , data1 : 37 , data2 : 0	#Adjust Out FWD
+		Send msg in 21ms to midi out 1 with channel : 2 , command : 176 , data1 : 37 , data2 : 127	#Adjust Out FWD
+		Send msg in 30ms to midi out 1 with channel : 2 , command : 176 , data1 : 37 , data2 : 0	#Adjust Out FWD
+		Consume received msg
+end
+
+
+####################################  PITCH BEND WITH BUTTON ### B DECK #######
+
+#Midi Out: 40 Type: Button Up #Pitch Bend Down
+#Midi Out: 41 Type: Button Up #Pitch Bend Up
+#Midi Out: 42 Type: Button Up #PITCH RANGE 8/35/50/100 Down
+#Midi Out: 43 Type: Button Up #PITCH RANGE 8/35/50/100 Up
+
+rule "B:Pitch Bend Down"	
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 144
+		data1 is equal to 8
+		data2 is equal to 127
+		Variable "SHIFT" is equal to 0
+	then 
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 40 , data2 : 127	#Pitch Bend Down
+		Consume received msg
+end
+
+rule "B:Pitch Bend Down Release"	
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 144
+		data1 is equal to 8
+		data2 is equal to 0
+		Variable "SHIFT" is equal to 0
+	then 
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 40 , data2 : 0	#Pitch Bend Down
+		Consume received msg
+end
+
+rule "B:Pitch Bend Up"	
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 144
+		data1 is equal to 9
+		data2 is equal to 127
+		Variable "SHIFT" is equal to 0
+	then 
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 41 , data2 : 127	#Pitch Bend Up
+		Consume received msg
+end
+rule "B:Pitch Bend Up Release"	
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 144
+		data1 is equal to 9
+		data2 is equal to 0
+		Variable "SHIFT" is equal to 0
+	then 
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 41 , data2 : 0	#Pitch Bend Up
+		Consume received msg
+end
+
+
+####################################  DECK SEARCH WITH BUTTONs ### B DECK #######
+
+#Midi Out: 33 Type: Button Up #Move Beats Fine Bwd
+#Midi Out: 34 Type: Button Up #Move Beats Fine Fwd
+
+rule "B:SEARCH BWD with Button"	
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 144
+		data1 is equal to 6
+		data2 is equal to 127
+		Variable "LOOP_IN_ADJUST_B" is equal to 0
+		Variable "LOOP_OUT_ADJUST_B" is equal to 0
+	then 
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 111 , data2 : 127  	#Deck B Focus
+		Set variable "SEARCH_B" to 1
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 33 , data2 : 127	#Deck SEARCH
+		Consume received msg
+end
+
+rule "B:SEARCH BWD with Button Released"	
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 144
+		data1 is equal to 6
+		data2 is equal to 0
+		Variable "LOOP_IN_ADJUST_B" is equal to 0
+		Variable "LOOP_OUT_ADJUST_B" is equal to 0
+	then 
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 111 , data2 : 127  	#Deck B Focus
+		Set variable "SEARCH_B" to 0
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 33 , data2 : 127	#Deck SEARCH
+		Consume received msg
+end
+
+rule "B:SEARCH FWD with Button"	
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 144
+		data1 is equal to 7
+		data2 is equal to 127
+		Variable "LOOP_IN_ADJUST_B" is equal to 0
+		Variable "LOOP_OUT_ADJUST_B" is equal to 0
+	then 
+		Set variable "SEARCH_B" to 1
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 34 , data2 : 127	#Deck SEARCH 
+		Consume received msg
+end
+
+rule "B:SEARCH FWD with Button Released"	
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 144
+		data1 is equal to 7
+		data2 is equal to 0
+		Variable "LOOP_IN_ADJUST_B" is equal to 0
+		Variable "LOOP_OUT_ADJUST_B" is equal to 0
+	then 
+		Set variable "SEARCH_B" to 0
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 34 , data2 : 127	#Deck SEARCH 
+		Consume received msg
+end
+
+####################################  LOOP IN ADJ/OUT ADJ WITH BUTTONs ### B DECK #######
+
+#Midi Out: 35 Type: Hold #Adjust In BWD
+#Midi Out: 36 Type: Hold #Adjust In FWD
+
+#Midi Out: 37 Type: Hold #Adjust OUT BWD
+#Midi Out: 38 Type: Hold #Adjust OUT FWD
+
+rule "B:Loop IN ADJ BWD"
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 144
+		data1 is equal to 6
+		data2 is equal to 127
+		Variable "LOOP_IN_ADJUST_B" is equal to 1
+		Variable "LOOP_MODE_B" is not equal to 0
+	then 
+		Set variable "LOOP_SIZE_B" to 0
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 35 , data2 : 127	#Loop IN ADJ BWD
+		Send msg in 100ms to midi out 1 with channel : 3 , command : 144 , data1 : 35 , data2 : 0	#Loop IN ADJ BWD
+		Consume received msg
+end
+
+rule "B:Loop IN ADJ FWD"
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 144
+		data1 is equal to 7
+		data2 is equal to 127
+		Variable "LOOP_IN_ADJUST_B" is equal to 1
+		Variable "LOOP_MODE_B" is not equal to 0
+	then 
+		Set variable "LOOP_SIZE_B" to 0
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 36 , data2 : 127	#Loop IN ADJ FWD
+		Send msg in 100ms to midi out 1 with channel : 3 , command : 144 , data1 : 36 , data2 : 0	#Loop IN ADJ FWD
+		Consume received msg
+end
+
+rule "B:Loop OUT ADJ BWD"
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 144
+		data1 is equal to 6
+		data2 is equal to 127
+		Variable "LOOP_OUT_ADJUST_B" is equal to 1
+		Variable "LOOP_MODE_B" is not equal to 0
+	then 
+		Set variable "LOOP_SIZE_B" to 0
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 37 , data2 : 127	 #Loop Out ADJ BWD
+		Send msg in 100ms to midi out 1 with channel : 3 , command : 144 , data1 : 37 , data2 : 0 #Loop Out ADJ BWD
+		Consume received msg
+end
+
+rule "B:Loop OUT ADJ FWD"
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 144
+		data1 is equal to 7
+		data2 is equal to 127
+		Variable "LOOP_OUT_ADJUST_B" is equal to 1
+		Variable "LOOP_MODE_B" is not equal to 0
+	then 
+		Set variable "LOOP_SIZE_B" to 0
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 38 , data2 : 127	 #Loop Out ADJ FWD
+		Send msg in 100ms to midi out 1 with channel : 3 , command : 144 , data1 : 38 , data2 : 0 #Loop Out ADJ FWD
+		Consume received msg
+end
+
+####################################  HOT CUE / SET CUE / JUMP TO CUE / DELETE CUE ### B DECK #######
+/*
+CUE MODE:
+0 - JUMP 
+1 - SET (Rec Mode)
+2 - DELETE Mode
+*/
+
+#Traktor
+#Midi Out: 48 Type: Button Up #Next Cue		#Next Cue Point
+#Midi Out: 50 Type: Button Up #Prev Cue		#Previous Cue Point
+#Midi Out: 52 Type: Button Up #Lock Cue		#
+#Midi Out: 53 Type: Button Up #Delete Cue	#Shift
+
+
+rule "B:Set Cue"	
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 144
+		data1 is equal to 21
+		data2 is equal to 127
+	then 
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 111 , data2 : 127  	#Deck B Focus
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 52 , data2 : 127		#Set Cue
+
+		Send msg in 5ms to midi out 3 with channel : 1 , command : 176 , data1 : 15 , data2 : 127 	#Cue 2 Led On
+		Send msg in 200ms to midi out 3 with channel : 1 , command : 176 , data1 : 15 , data2 : 0	#Cue 2 Led Off
+		Consume received msg
+end
+
+rule "B:Delete Cue"	
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 144
+		data1 is equal to 21
+		data2 is equal to 127
+		Variable "SHIFT" is equal to 1
+	then 
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 53 , data2 : 1	#Delete Cue
+		Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 15 , data2 : 127 	#Cue 1 Led On
+		Send msg in 250ms to midi out 3 with channel : 1 , command : 176 , data1 : 15 , data2 : 0 #Cue 1 Led Off
+		Consume received msg
+end
+
+rule "B:Jump to Prev Cue"	
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 144
+		data1 is equal to 20
+		data2 is equal to 127
+	then 
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 111 , data2 : 127  	#Deck B Focus
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 50 , data2 : 1	#Jump to Cue 1
+		Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 16 , data2 : 127 	#Cue 1 Led On
+		Send msg in 125ms to midi out 3 with channel : 1 , command : 176 , data1 : 16 , data2 : 0 #Cue 1 Led Off
+		Consume received msg
+end
+
+rule "B:Jump to Next Cue"	
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 144
+		data1 is equal to 22
+		data2 is equal to 127
+	then 
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 111 , data2 : 127  	#Deck B Focus
+		Send msg to midi out 1 with channel : 3 , command : 144 , data1 : 48 , data2 : 2	#Jump to Cue 2
+		Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 16 , data2 : 127	#Cue 2 Led On
+		Send msg in 125ms to midi out 3 with channel : 1 , command : 176 , data1 : 16 , data2 : 0 #Cue 2 Led Off
+		Consume received msg
+end
+
+#################################### LOOPS IN OUT ### B DECK ######################################
+/*
+"LOOP_MODE_B"
+	0 no loop           #stand by
+	1 loop in is set    #step 1 of 2
+	2 loop out is set   #step 2 of 2
+	3 sized loop is set #buttons 1 to 5
+*/
+
+#Midi Out: 88 Type: Button Up #Loop Set In/Adjust In
+#Midi Out: 89 Type: Button Up #Loop Set Out/Adjust Out/Exit
+#Midi Out: 97 Type: Button Up #Exit/Reloop
+
+rule "B:Loop Set In"	
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 144
+		data1 is equal to 11
+		data2 is equal to 127
+		Variable "LOOP_MODE_B" is equal to 0
+		Variable "LOOP_IN_ADJUST_B" is equal to 0
+	then 
+		Set variable "LOOP_MODE_B" to 1
+		Set variable "LOOP_IN_ADJUST_B" to 0
+
+		Send msg to midi out 1 with channel : 7 , command : 144 , data1 : 88 , data2 : 127	#Loop Set In 
+		Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 13 , data2 : 127 	#Loop In LED ON
+		Consume received msg
+end
+
+
+rule "B:Loop In Adjust Mode On"	
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 144
+		data1 is equal to 11
+		data2 is equal to 127
+		Variable "LOOP_MODE_B" is greater than 1
+		Variable "LOOP_IN_ADJUST_B" is equal to 0
+	then 
+		Set variable "LOOP_IN_ADJUST_B" to 1
+		Set variable "LOOP_OUT_ADJUST_B" to 0
+
+		Set variable "EX_TIME_LOOP_ADJ_B" to received_message_time
+		Log "30s Timer is On"
+
+		Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 12 , data2 : 127 	#Loop Out LED On
+		Send msg to midi out 2 with channel : 1 , command : 176 , data1 : 11 , data2 : 0	#Blink Adj In Led
+
+		Consume received msg
+
+end
+
+rule "B:Blink Adj In Led On"
+	when
+		Receive msg
+		midi in is equal to 1 #Loopback
+		channel is equal to 1
+		command is equal to 176
+		data1 is equal to 11 #Led In Adj
+		data2 is equal to 127
+		Variable "LOOP_IN_ADJUST_B" is equal to 1
+	then
+		Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 13 , data2 : 127 	#Loop In LED On
+		Send msg "B:Blink Adj In Led Off" in 500ms to midi out 2 with channel : 1 , command : 176 , data1 : 11 , data2 : 0	#Blink Adj In Led
+		Consume received msg
+end
+
+rule "B:Blink Adj In Led Off"
+	when
+		Receive msg
+		midi in is equal to 1 #Loopback
+		channel is equal to 1
+		command is equal to 176
+		data1 is equal to 11 #Led In Adj
+		data2 is equal to 0
+		Variable "LOOP_IN_ADJUST_B" is equal to 1
+	then
+		Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 13 , data2 : 0	#Loop In LED Off
+		Send msg "B:Blink Adj In Led On" in 300ms to midi out 2 with channel : 1 , command : 176 , data1 : 11 , data2 : 127	#Blink Adj In Led
+		Consume received msg
+end
+
+rule "B:Blink Adj In Led Timer"
+	when
+		Receive msg
+		midi in is equal to 1 #Loopback
+		channel is equal to 1
+		command is equal to 176
+		data1 is equal to 11 #Led In Adj
+		Variable "LOOP_IN_ADJUST_B" is equal to 1
+		Variable "EX_TIME_LOOP_ADJ_B" is less than (received_message_time - 30000) #Blink only for 30 sec
+	then
+		Set variable "LOOP_IN_ADJUST_B" to 0
+		Log "30s Timer is off"
+		Consume received msg
+end
+
+
+rule "B:Loop In Adjust Mode Off"	
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 144
+		data1 is equal to 11
+		data2 is equal to 127
+		Variable "LOOP_MODE_B" is greater than 1
+		Variable "LOOP_IN_ADJUST_B" is equal to 1
+	then 
+		Set variable "LOOP_IN_ADJUST_B" to 0
+		Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 13 , data2 : 127 	#Loop In LED ON
+		Consume received msg
+end
+
+
+rule "B:Loop Set Out"	
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 144
+		data1 is equal to 24
+		data2 is equal to 127
+		Variable "LOOP_MODE_B" is equal to 1
+		Variable "LOOP_OUT_ADJUST_B" is equal to 0
+	then 
+		Set variable "LOOP_MODE_B" to 2
+		Set variable "LOOP_OUT_ADJUST_B" to 0
+
+		Send msg to midi out 1 with channel : 7 , command : 144 , data1 : 89 , data2 : 127	#Loop Out/Exit
+		Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 12 , data2 : 127 	#Loop Out LED ON
+		Consume received msg
+end
+
+
+rule "B:Loop Out Adjust Mode On"	
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 144
+		data1 is equal to 24
+		data2 is equal to 127
+		Variable "LOOP_MODE_B" is greater than 1
+		Variable "LOOP_OUT_ADJUST_B" is equal to 0
+	then 
+		Set variable "LOOP_OUT_ADJUST_B" to 1
+		Set variable "LOOP_IN_ADJUST_B" to 0
+
+		Set variable "EX_TIME_LOOP_ADJ_B" to received_message_time
+		Log "30s Timer is On"
+
+		Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 13 , data2 : 127 	#Loop In LED On
+		Send msg to midi out 2 with channel : 1 , command : 176 , data1 : 12 , data2 : 0	#Blink Adj Out Led
+
+		Consume received msg
+end
+
+rule "B:Blink Adj Out Led On"
+	when
+		Receive msg
+		midi in is equal to 1 #Loopback
+		channel is equal to 1
+		command is equal to 176
+		data1 is equal to 12 #Led Out Adj
+		data2 is equal to 127
+		Variable "LOOP_OUT_ADJUST_B" is equal to 1
+	then
+		Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 12 , data2 : 127 	#Loop Out LED On
+		Send msg "B:Blink Adj Out Led Off" in 500ms to midi out 2 with channel : 1 , command : 176 , data1 : 12 , data2 : 0	#Blink Adj Out Led
+		Consume received msg
+end
+
+rule "B:Blink Adj Out Led Off"
+	when
+		Receive msg
+		midi in is equal to 1 #Loopback
+		channel is equal to 1
+		command is equal to 176
+		data1 is equal to 12 #Led Out Adj
+		data2 is equal to 0
+		Variable "LOOP_OUT_ADJUST_B" is equal to 1
+	then
+		Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 12 , data2 : 0	#Loop Out LED Off
+		Send msg "B:Blink Adj Out Led On" in 300ms to midi out 2 with channel : 1 , command : 176 , data1 : 12 , data2 : 127	#Blink Adj Out Led
+		Consume received msg
+end
+
+rule "B:Blink Adj Out Led Timer"
+	when
+		Receive msg
+		midi in is equal to 1 #Loopback
+		channel is equal to 1
+		command is equal to 176
+		data1 is equal to 12 #Led Out Adj
+		Variable "LOOP_OUT_ADJUST_B" is equal to 1
+		Variable "EX_TIME_LOOP_ADJ_B" is less than (received_message_time - 30000) #Blink only for 30 sec
+	then
+		Set variable "LOOP_OUT_ADJUST_B" to 0
+		Log "30s Timer is off"
+		Consume received msg
+end
+
+rule "B:Loop Out Adjust Mode Off"	
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 144
+		data1 is equal to 24
+		data2 is equal to 127
+		#Variable "LOOP_MODE_B" is not equal to 0
+		Variable "LOOP_MODE_B" is greater than 1
+		Variable "LOOP_OUT_ADJUST_B" is equal to 1
+	then 
+		Set variable "LOOP_OUT_ADJUST_B" to 0
+		Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 12 , data2 : 127 	#Loop Out LED ON
+		Consume received msg
+end
+
+
+rule "B:Loop Exit"	
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 144
+		data1 is equal to 23
+		data2 is equal to 127
+		Variable "LOOP_MODE_B" is equal to 2
+		#Variable "LOOP_OUT_MODE_B" is equal to 3
+	then 
+		Set variable "LOOP_MODE_B" to 0
+		Set variable "LOOP_IN_ADJUST_B" to 0
+		Set variable "LOOP_OUT_ADJUST_B" to 0
+
+		Send msg to midi out 1 with channel : 7 , command : 144 , data1 : 88, data2 : 127	#Loop Set Out/Adjust Out/Exit
+
+		Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 13 , data2 : 0 	#Loop In LED Off
+		Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 12 , data2 : 0 	#Loop Out LED Off
+		Consume received msg
+end
+
+rule "B:Loop Reloop"	
+	when
+		Receive msg
+		midi in is equal to 2 #BCD3000
+		channel is equal to 1
+		command is equal to 144
+		data1 is equal to 23
+		data2 is equal to 127
+		Variable "LOOP_MODE_B" is equal to 0
+	then 
+		Set variable "LOOP_MODE_B" to 2
+		#Set variable "LOOP_SIZE_B" to 0
+
+		Set variable "LOOP_IN_ADJUST_B" to 0
+		Set variable "LOOP_OUT_ADJUST_B" to 0
+
+		Send msg to midi out 1 with channel : 7 , command : 144 , data1 : 97 , data2 : 127	#Reloop
+		Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 13 , data2 : 127 	#Loop In LED On
+		Send msg to midi out 3 with channel : 1 , command : 176 , data1 : 12 , data2 : 127 	#Loop Out LED On
+		Consume received msg
+end
+
+

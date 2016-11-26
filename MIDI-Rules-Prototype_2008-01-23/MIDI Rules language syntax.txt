@@ -1,0 +1,35 @@
+# Domain-specific language (DSL) for processing midi messages with MIDI Rules Prototype 2007-12-09
+[then]Consume received message
+[when]Receive short message with channel : {channel} , command : {command} , data1 : {data1} , data2 : {data2} #Implicit variables received_message_midi_port, received_message_time
+[when]Receive short message on midi in {midi_in_number} with channel : {channel} , command : {command} , data1 : {data1} , data2 : {data2} #Implicit variable received_message_time
+[then]Send short message to midi out {midi_out_number} with channel : {channel} , command : {command} , data1 : {data1} , data2 : {data2}
+[when]Receive short message # Implicit variables received_message_channel, received_message_command, received_message_data1, received_message_data2, received_message_midi_port, received_message_time
+[when]midi in is equal to {midi_in_number}
+[when]channel is equal to {channel}
+[when]channel is less than {channel}
+[when]channel is greater than {channel}
+[when]command is equal to {command}
+[when]data1 is equal to {data1}
+[when]data1 is less than {data1}
+[when]data1 is greater than {data1}
+[when]data2 is equal to {data2}
+[when]data2 is less than {data2}
+[when]data2 is greater than {data2}
+[when]time is at least {ms} later then {other_time}
+[when]time is at most {ms} later then {other_time}
+[then]Pass message throu to midi out {midi_out_number}
+[when]Initialization
+[then]Set variable "{name}" to {value}
+[then]Create variable "{name}"
+[then]Send short message "{key}" in {delay}ms to midi out {midi_out_number} with channel : {channel} , command : {command} , data1 : {data1} , data2 : {data2}
+[then]Send short message in {delay}ms to midi out {midi_out_number} with channel : {channel} , command : {command} , data1 : {data1} , data2 : {data2}
+[when]Variable "{name}" is equal to {value}
+[when]Variable "{name}" is not equal to {value}
+[when]Variable "{name}" is less than {value}
+[when]Variable "{name}" is greater than {value}
+[then]Trigger timer "{name}" at time {time}
+[then]Trigger timer "{name}"
+[then]Trigger timer "{name}" in {delay}ms
+[when]Timer "{name}" triggered #Implicit variable timer_time
+[then]Consume timer "{name}"
+[then]Log "{message}"

@@ -1,0 +1,90 @@
+MIDI Rules revision history
+---------------------------
+2008-01-23
+Changed command syntax from throu to through
+Changed RECEIVE SHORT MESSAGE to RECEIVE MSG
+Changed SEND SHORT MESSAGE to SEND MSG
+Changed CONSUME RECEIVED MESSAGE TO CONSUME RECEIVED MSG
+Changed PASS MESSAGE to PASS MSG
+
+2007-12-09_r2:
++ support JAVA 5 +
+2007-12-09:
++ Add support for multiple midi inputs 
++ Add language expression for midi input number:
+	* Receive short message on midi in {midi_in_number} with channel : {channel} , command : {command} , data1 : {data1} , data2 : {data2}
+	* add implicit variable "received_message_midi_port" to legacy "Receive short message" and "Receive short message with ..."
+
+2007-08-09:
++ Fix bug "deadlock in timer implementation"
++ Upgrade to JBoss Rules 3.0.6
++ add timer to rule language:
+	* [then]Trigger timer "{name}" at time {time}
+	* [then]Trigger timer "{name}"
+	* [then]Trigger timer "{name}" in {delay}ms
+	* [when]Timer "{name}" triggered // timer_time holds the time when the timer was trigger. Can be used to schedule another timer at a specific time
+	* [then]Consume timer "{name}" // remove timer triggered event
+	
+12/25/2006:
++ open rule file from within MIDI Rules Prototype (no .bat file necessary)
++ midi input/output select validation
++ rule language changes:
+	* change variable type from text to number!
+	
+	* change when-expression:
+		Variable "{name}" is "{value}"
+	  to
+	  	Variable "{name}" is equal to {value}
+	  	
+	* change when-expression:
+		Variable "{name}" is not "{value}"
+	  to
+	  	Variable "{name}" is not equal to {value}
+	* add when-expression:
+		Variable "{name}" is less than {value}
+		
+	* add when-expression:
+		Variable "{name}" is greater than {value}
+		
+	* add when-expression (implies value references for use other expressions: received_message_channel, received_message_command, received_message_data1, received_message_data2):
+		Receive short message  	
+		
+	* add when-expression (depends on 'Receive short message'):
+		channel is equal to {channel}
+		
+	* add when-expression (depends on 'Receive short message'):	
+		channel is less than {channel}
+		
+	* add when-expression (depends on 'Receive short message'):		
+		channel is greater than {channel}
+		
+	* add when-expression (depends on 'Receive short message'):		
+		command is equal to {command}
+		
+	* add when-expression (depends on 'Receive short message'):		
+		data1 is equal to {data1}
+		
+	* add when-expression (depends on 'Receive short message'):		
+		data1 is less than {data1}
+		
+	* add when-expression (depends on 'Receive short message'):		
+		data1 is greater than {data1}
+		
+	* add when-expression (depends on 'Receive short message'):		
+		data2 is equal to {data2}
+		
+	* add when-expression (depends on 'Receive short message'):		
+		data2 is less than {data2}
+		
+	* add when-expression (depends on 'Receive short message'):		
+		data2 is greater than {data2}
++ upgrade jboss rule engine from 3.0.4 to 3.0.5
+
+08/26/2006:
++ fix bug "permute outgoing midi messages in time"
++ modify MIDI rule language : 
+	* remove "between" expressions
+	* remove log expressions
+	* change "state" to "variable"
+	* change "message" to "short message"
++ upgrade jboss rule engine from 3.0.3 to 3.0.4

@@ -1,0 +1,19 @@
+How to upgrade rule files written for MIDI Rules Prototype 08/26/2006 to MIDI Rules Prototype 12/25/2006 or later
+-----------------------------------------------------------------------------------------------------------------
+Requirements: A text editor or other tool that supports search-and-replace
+
+1. change when-expression: 'Variable "{name}" is "{value}"' to 'Variable "{name}" is equal to {value}':
+replace (incl. "-characters)
+	" is "
+with
+	" is equal to "
+
+2. change when-expression: 'Variable "{name}" is not "{value}"' to 'Variable "{name}" is not equal to {value}':
+replace (incl. "-characters)
+	" is not "
+with
+	" is not equal to "
+
+3. Variable type change from text to number: 
+For each variable value e.g. "NO" select an number encoding e.g. 0 and run a search-and-replace over the whole rule file.
+
